@@ -1,0 +1,134 @@
+	\documentclass[english]{scrartcl}
+	\usepackage[utf8]{inputenc}  
+	\usepackage[T1]{fontenc}  
+	
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{bm}
+\usepackage{tikz-cd} 
+\usepackage[colorlinks,bookmarks=true,citecolor=blue,linkcolor=red,urlcolor=blue]{hyperref}
+
+\usepackage{graphicx}  
+
+\usepackage{caption}  
+%\usepackage{subcaption}  
+%\usepackage{float}   
+\usepackage{subfig}
+\usepackage{floatrow}
+\usepackage{wrapfig}
+\usepackage{stackengine}
+\usepackage{tensor}
+
+\usepackage{braket}
+\usepackage{comment}
+
+\usepackage[acronym]{glossaries}
+
+\title{Numerically computing Chern number and Berry curvature}
+
+\author{Benjamin Michen}
+\date{\today}
+
+\newcommand{\mc}{\mathcal}
+\newcommand{\mb}{\mathbb}
+\newcommand{\tb}{\textbf}
+\newcommand{\ti}{{\hat T_I}}
+\newcommand{\eq}[1]{Eq.~(\ref{#1})}
+
+
+
+\makenoidxglossaries
+
+\newacronym{bch}{BCH}{Baker-Campbell-Hausdorff}
+\newacronym{1d}{1D}{one-dimensional}
+\newacronym{2d}{2D}{two-dimensional}
+\newacronym{fbz}{FBZ}{first Brillouin zone}
+\newacronym{obc}{OBC}{open boundary conditions}
+
+\glsdisablehyper
+
+
+\begin{document}
+\maketitle
+{
+\hypersetup{linkcolor=black}
+\tableofcontents
+}
+
+\newpage
+
+\section{Berry connection and Berry curvature}
+We briefly summarize the approach presented in \cite{chern_number_notes}. For $H(\bm k)$, we define the Berry connection associated to the $n$-th band as
+
+\begin{align}
+\bm A_n = i \bra{u_n(\bm k)} \nabla_{\bm k} \ket{u_n(\bm k)}. \label{Eqn:Berry_connection}
+\end{align}
+The Berry curvature is then 
+
+\begin{align}
+\Omega_{n} = \partial_x A_y - \partial_y A_x. \label{Eqn:Berry_curvature}
+\end{align}
+The Berry curvature is gauge-invariant in contrast to the Berry connection and can be integrated over the \gls{fbz} to find the Chern number of the band:
+
+\begin{align}
+C_n = \frac{1}{2\pi} \int_{\gls{fbz}} \Omega_{n}(\bm k) d k_x d k_y. \label{Eqn:Chern_number}
+\end{align}
+
+However, in praxi this is a tad cumbersome because one needs a smooth gauge for the eigenstates to calculate \eq{Eqn:Berry_connection} and \eq{Eqn:Berry_curvature}. This can be circumvented by the following trick: we divide the \gls{fbz} into small plaquettes of size $\frac{2 \pi}{N} \times \frac{2 \pi}{N}$ which we index by $\bm j = (j_x, j_y)$ such that $\bm k(\bm j) = (-\pi + j_x \Delta_k, -\pi + j_y \Delta_k)$ with $\Delta_k = 2 \pi / N$. For each plaquette we have by virtue of Stoke's theorem:
+
+\begin{align*}
+\Phi_{\bm j} =& \int_{\Gamma_{\bm j}} \Omega_{n}(\bm k) d k_x d k_y = \int_{\partial \Gamma _{\bm j}} \bm A_n \cdot d \bm k
+= i \int_{\partial \Gamma _{\bm j}} \bra{u_n(\bm k)} \nabla_{\bm k} \ket{u_n(\bm k)} \cdot d \bm k \\
+\approx& i\sum_{p \in \partial \Gamma_{\bm j}} \Delta_k \frac{\braket{u_n(\bm k_p) | u_n(\bm k_{p+1})} - \braket{u_n(\bm k_p) | u_n(\bm k_p)}}{\Delta_k} \\
+=& i \sum_{p \in \partial \Gamma_{\bm j}} \left[  \braket{u_n(\bm k_p) | u_n(\bm k_{p+1})} - 1\right]
+\end{align*}
+In this form, one would need to find a smooth gauge for $\ket{u_n(\bm k)}$ to avoid numerical difficulties. However, small plaquettes mean that $\Phi_{\bm j}$ is also small and we may instead consider the exponential
+\begin{align*}
+e^{-i \Phi_{\bm j}} \approx& \prod_{p \in \partial \Gamma}e^{\left[\braket{u_n(\bm k_p) | u_n(\bm k_{p+1})} - 1\right]} \approx \prod_{p \in \partial \Gamma}\braket{u_n(\bm k_p) | u_n(\bm k_{p+1})} 
+\end{align*}
+[In reference \cite{chern_number_notes}, $e^{-i \Phi_{\bm j}}$ is used, but this might be a mistake?] We find
+\begin{align}
+\Phi_{\bm j} \approx& - \text{Arg}\left [\prod_{p \in \partial \Gamma}\braket{u_n(\bm k_p) | u_n(\bm k_{p+1})} \right].
+\end{align} 
+While we assumed a smooth gauge to expand the exponentials in the penultimate equation, the product approximation we arrived at is gauge-invariant! We can now also calculate the Berry curvature as 
+\begin{align}
+\Omega(\bm k_{\bm j}) = \frac{1}{\Delta_k^2}\Phi_{\bm j} 
+\end{align} 
+
+\section{Berry curvature for two-band system}
+Denoting the projector to a set of occupied bands by $P(\bm k)$, the total chern number of this fibre bundle is written as
+
+\begin{align}
+C = \frac{1}{2 \pi} \int_{\gls{fbz}} \mathrm{Tr} \left[ i d P \wedge P d P\right].
+\end{align}
+For a two-band Hamiltonian $\bm h(\bm k) \cdot \bm \sigma$, the projector on the $\pm$ band is $[\sigma_0 \pm \bm {\hat  h}]/2$, where $\bm {\hat  h} = \bm h / |\bm h|$ is the unit vector along $\bm h$. The Chern number is then 
+
+\begin{align}
+C_\pm = \mp  \frac{1}{4 \pi} \int_{\gls{fbz}} \bm {\hat  h} \cdot [\partial_{k_x} \bm {\hat  h} \times \partial_{k_y} \bm {\hat  h}]dk_x dk_y,
+\end{align}
+which allows us to read off the expression for the Berry curvature directly as
+\begin{align}
+\Omega_{\pm}(\bm k) = \mp \bm {\hat  h} \cdot [\partial_{k_x} \bm {\hat  h} \times \partial_{k_y} \bm {\hat  h}]/ 2.
+\end{align}
+See, e.g., \cite{Chern_engineering} for reference. We can also express this in terms of the original Bloch vector as
+\begin{align}
+\Omega_{\pm}(\bm k) = \frac{\mp 1}{|\bm h|^3}\bm {h} \cdot [\partial_{k_x} \bm {h} \times \partial_{k_y} \bm {h}]/ 2.
+\end{align}
+
+\printnoidxglossaries
+
+\newpage
+\begin{thebibliography}{10}
+\bibitem{chern_number_notes}
+A. Akhmerov et al., {\em Notes on computing the Chern number}, \href{https://topocondmat.org/w4_haldane/ComputingChern.html}{Online course on topology}.
+
+\bibitem{Chern_engineering}
+D. Sticlet, F. Pi´echon, J.-N. Fuchs, P. Kalugin, and P. Simon {\em Geometrical engineering of a two-band Chern insulator in two dimensions with arbitrary
+topological index}, \href{https://journals.aps.org/prb/abstract/10.1103/PhysRevB.85.165456}{Phys. Rev. B {\bfseries 85}, 165456 (2012)}.
+\end{thebibliography}
+
+
+
+\end{document}
+

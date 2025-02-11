@@ -1,0 +1,211 @@
+	\documentclass[english]{scrartcl}
+	\usepackage[utf8]{inputenc}  
+	\usepackage[T1]{fontenc}  
+	
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{bm}
+\usepackage{tikz-cd} 
+\usepackage[colorlinks,bookmarks=true,citecolor=blue,linkcolor=red,urlcolor=blue]{hyperref}
+
+\usepackage{graphicx}  
+
+\usepackage{caption}  
+%\usepackage{subcaption}  
+%\usepackage{float}   
+\usepackage{subfig}
+\usepackage{floatrow}
+\usepackage{wrapfig}
+\usepackage{stackengine}
+\usepackage{tensor}
+
+\usepackage{braket}
+\usepackage{comment}
+
+\usepackage[acronym]{glossaries}
+
+\title{Models}
+
+\author{Benjamin Michen}
+\date{\today}
+
+\newcommand{\mc}{\mathcal}
+\newcommand{\mb}{\mathbb}
+\newcommand{\tb}{\textbf}
+\newcommand{\ti}{{\hat T_I}}
+\newcommand{\eq}[1]{Eq.~(\ref{#1})}
+
+
+
+\makenoidxglossaries
+
+\newacronym{bch}{BCH}{Baker-Campbell-Hausdorff}
+
+\glsdisablehyper
+
+
+\begin{document}
+\maketitle
+{
+\hypersetup{linkcolor=black}
+\tableofcontents
+}
+
+\newpage
+
+\section{Fulga model}
+The model used in Ref.~\cite{Fulga_Bergholtz} reads
+
+\begin{align}
+H = \sum_{\bm k} (c^\dagger_{\bm{k},  a}, c^\dagger_{\bm{k},  b}, c^\dagger_{\bm{k},  c})
+\begin{pmatrix} 
+h_{11}(\bm k) & h_{12}(\bm k) & v \\
+h_{12}(\bm k) ^*&  -h_{11}(\bm k) & 0 \\
+v & 0 & 0 
+\end{pmatrix}
+\begin{pmatrix}
+c_{\bm{k},  a}\\
+c_{\bm{k},  b}\\
+c_{\bm{k},  c}
+\end{pmatrix}
+\end{align}
+where $h_{11}(\bm k) = 2(\cos(k_x) - \cos(k_y))$ and $h_{12}(\bm k) = \sqrt{2} e^{- i \pi /4} (e^{i k_x} + e^{-i k_y} + i \left(e^{i (k_x - k_y)} + 1 \right)) $. {\color{red} [Caution! The incorrect term $h_{12}(\bm k) = \sqrt{2} e^{- i \pi /4} (e^{i k_x} + e^{i k_y} + i e^{i (k_x + k_y)} + 1) $ is stated in the manuscript \cite{Fulga_Bergholtz}!]} Using
+\begin{align*}
+c^\dagger_{\bm{k}, \gamma}  = \frac{1}{\sqrt{N}} \sum_{\bm j } e^{i \bm k \cdot \bm j}  c^\dagger_{\bm j, \gamma}
+\end{align*}
+and
+\begin{align*}
+\sum_{\bm j } c^\dagger_{\bm{j}, \gamma} c_{\bm{j} + \bm \delta, \gamma'}   =& \frac{1}{N} \sum_{\bm j} \sum_{\bm k_1} \sum_{\bm k_2}  e^{-i \bm k_1 \cdot \bm j }   e^{i \bm k_2 \cdot (\bm j + \bm \delta) }  c^\dagger_{\bm k_1, \gamma} c_{\bm k_2, \gamma'} \\
+=& \sum_{\bm k} e^{i \bm k \bm \delta} c^\dagger_{\bm k, \gamma} c_{\bm k, \gamma'},
+\end{align*}
+we read off the real-space representation
+
+
+\begin{align*}
+H = & \sum_{\bm j} \left ( \left [\sqrt{2}i e^{-i \pi /4} c^\dagger_{\bm{j},  a} c_{\bm{j},  b} + \text{H.c.}\right ] + v \left [ c^\dagger_{\bm{j},  a} c_{\bm{j}, c} + \text{H.c.}\right ] \right . \\
+& + \left [c^\dagger_{\bm{j},  a} c_{\bm{j} + \bm \delta_x,  a} + \sqrt{2} e^{- i \pi /4} c^\dagger_{\bm{j},  a} c_{\bm{j} + \bm \delta_x,  b} - c^\dagger_{\bm{j},  b} c_{\bm{j} + \bm \delta_x,  b} + \text{H.c.}\right ]  \\
+& + \left [-c^\dagger_{\bm{j},  a} c_{\bm{j} + \bm \delta_y,  a} + \underbrace{\sqrt{2} e^{- i \pi /4} c^\dagger_{\bm{j},  a} c_{\bm{j} - \bm \delta_y,  b}}_{\sim \sqrt{2} ie^{- i \pi /4} c^\dagger_{\bm{j},  b} c_{\bm{j} + \bm \delta_y,  a}}+ c^\dagger_{\bm{j},  b} c_{\bm{j} + \bm \delta_y,  b} + \text{H.c.}\right ] \\
+& \left.+ \left [ \sqrt{2} i e^{- i \pi /4} c^\dagger_{\bm{j},  a} c_{\bm{j} + \bm \delta_x - \bm \delta_y,  b} + \text{H.c.}\right ] \right ) 
+\end{align*}
+
+\section{Quantum spin Hall insulator}
+The model considered in \cite{theory_TA} (see also \cite{QSH_Bernevig}) reads in $k$ space
+
+\begin{align*}
+H_\text{QSH} = \sum_{\bm k} (c^\dagger_{\bm{k},  a \uparrow}, c^\dagger_{\bm{k},  b \uparrow},  c^\dagger_{\bm{k},  a \downarrow}, c^\dagger_{\bm{k},  b \downarrow})
+\begin{pmatrix} 
+H(\bm k) & 0  \\
+0 & H(\bm k)^* 
+\end{pmatrix}
+\begin{pmatrix}
+c_{\bm{k},  a\uparrow}\\
+c_{\bm{k},  b\uparrow}\\
+c_{\bm{k},  a\downarrow} \\
+c_{\bm{k},  b\downarrow}
+\end{pmatrix}
+\end{align*}
+with 
+\begin{align*}
+H(\bm k) =
+\begin{pmatrix}
+\epsilon(\bm k) + d_3(\bm k) & d_1(\bm k) - i d_2(\bm k) \\
+d_1(\bm k) + i d_2(\bm k) & \epsilon(\bm k) - d_3(\bm k)
+\end{pmatrix}
+\end{align*}
+where 
+\begin{align*}
+\epsilon(\bm k) =& 2 \gamma [2 - \cos(k_x) - \cos(k_y)] \approx \gamma [k_x^2 + k_y^2] \\
+d_1(\bm k) - i d_2(\bm k) = & \alpha [\sin(k_x)  + i\sin(k_y)] = \frac{i\alpha}{2} \left[e^{-i k_x} - e^{i k_x} + i e^{- i k_y} - i e^{i k_y} \right] \approx \alpha (k_x  + i k_y) \\
+d_3(\bm k) = & m + 2 \beta[2 - \cos(k_x) -\cos(k_y)] \approx m + \beta[k_x^2 + k_y^2]
+\end{align*}
+
+In real-space, this becomes 
+
+\begin{align*}
+H_{\text{QSH}, \uparrow} = & \sum_{\bm j} \left ( \left [4(\gamma + \beta + m / 4) c^\dagger_{\bm{j},  a \uparrow} c_{\bm{j},  a \uparrow} + 4(\gamma - \beta - m / 4) c^\dagger_{\bm{j},  b \uparrow} c_{\bm{j}, b \uparrow} \right ] \right . \\
+& + \bigg [-(\gamma + \beta) c^\dagger_{\bm{j},  a \uparrow} c_{\bm{j} + \bm \delta_x,  a \uparrow} - i \frac{\alpha}{2}  c^\dagger_{\bm{j},  a \uparrow} c_{\bm{j} + \bm \delta_x,  b \uparrow} + \underbrace{i \frac{\alpha}{2}  c^\dagger_{\bm{j},  a \uparrow} c_{\bm{j} - \bm \delta_x,  b \uparrow}}_{\sim -i \frac{\alpha}{2}  c^\dagger_{\bm{j},  b \uparrow} c_{\bm{j} + \bm \delta_x,  a \uparrow}}  \\
+&  - (\gamma - \beta) c^\dagger_{\bm{j},  b \uparrow} c_{\bm{j} + \bm \delta_x,  b \uparrow} + \text{H.c.}\bigg]  \\
+&  + \bigg [-(\gamma + \beta) c^\dagger_{\bm{j},  a \uparrow} c_{\bm{j} + \bm \delta_y,  a \uparrow} + \frac{\alpha}{2}  c^\dagger_{\bm{j},  a \uparrow} c_{\bm{j} + \bm \delta_y,  b \uparrow} - \underbrace{ \frac{\alpha}{2}  c^\dagger_{\bm{j},  a \uparrow} c_{\bm{j} - \bm \delta_y,  b \uparrow}}_{\sim \frac{\alpha}{2}  c^\dagger_{\bm{j},  b \uparrow} c_{\bm{j} + \bm \delta_y,  a \uparrow}}  \\
+& \left .  -(\gamma - \beta) c^\dagger_{\bm{j},  b \uparrow} c_{\bm{j} + \bm \delta_y,  b \uparrow}  + \text{H.c.} \bigg ] \right ) \\
+H_{\text{QSH}, \downarrow} = & \sum_{\bm j} \left ( \left [4(\gamma + \beta + m / 4) c^\dagger_{\bm{j},  a \downarrow} c_{\bm{j},  a \downarrow} + 4(\gamma - \beta - m / 4) c^\dagger_{\bm{j},  b \downarrow} c_{\bm{j}, b \downarrow} \right ] \right . \\
+& + \left [-(\gamma + \beta) c^\dagger_{\bm{j},  a \downarrow} c_{\bm{j} + \bm \delta_x,  a \downarrow} - i \frac{\alpha}{2}  c^\dagger_{\bm{j},  a \downarrow} c_{\bm{j} + \bm \delta_x,  b \downarrow} + i \frac{\alpha}{2}  c^\dagger_{\bm{j},  a \downarrow} c_{\bm{j} - \bm \delta_x,  b \downarrow} \right .\\
+& \left .  - (\gamma - \beta) c^\dagger_{\bm{j},  b \downarrow} c_{\bm{j} + \bm \delta_x,  b \downarrow} + \text{H.c.}\right ]  \\
+&  + \left [-(\gamma + \beta) c^\dagger_{\bm{j},  a \downarrow} c_{\bm{j} + \bm \delta_y,  a \downarrow} - \frac{\alpha}{2}  c^\dagger_{\bm{j},  a \downarrow} c_{\bm{j} + \bm \delta_y,  b \downarrow} +  \frac{\alpha}{2}  c^\dagger_{\bm{j},  a \downarrow} c_{\bm{j} - \bm \delta_y,  b \downarrow} \right . \\
+& \left . \left .  -(\gamma - \beta) c^\dagger_{\bm{j},  b \downarrow} c_{\bm{j} + \bm \delta_y,  b \downarrow}  + \text{H.c.} \right ] \right )
+\end{align*}
+Note that the complex conjugation happens in $k$ space and only flips the sign of the terms originating from $d_2$.
+
+\section{Double-cone CI}
+Consider the following model 
+\begin{align*}
+H_\text{DC}(\bm k) =
+\begin{pmatrix}
+d_3(\bm k) & d_1(\bm k) - i d_2(\bm k) \\
+d_1(\bm k) + i d_2(\bm k) & - d_3(\bm k)
+\end{pmatrix}
+\end{align*}
+where 
+\begin{align*}
+d_1(\bm k) =& \sin(k_x)\\
+d_2(\bm k) =& \sin(k_y)\\
+d_3(\bm k) =& r(\bm k) - \cos(n k_x) - \cos(k_y).
+\end{align*}
+For $n = 1$ and $r = \text{const}$, this is a minimal model for a Chern insulator, with the Chern numbers of the upper and lower band $(C_+, C_-) = (0, 0)$, $(-1, +1)$, $(+1, -1)$, $(0,0)$ for $r < -2$, $-2 <r < 0$, $0 < r < 2$, $2 < r$, respectively \cite{disordered_CI}.
+
+We now consider the case of $n = 2$ and 
+\begin{align*}
+r(\bm k) = r_1 [1 + \cos(k_x)]/2 + r_2 [1 - \cos(k_x)]/2.
+\end{align*}
+For $r_1 = r_2  \lessapprox 2$, we have a Dirac cone with negative mass at $k_x = 0$, $k_y = 0$ and a second cone at $k_x = \pm \pi$, $k_y = 0$ with negative mass as well but inverted Berry curvature. The system now looks topological around each cone, but the total Chern number of each band is zero! We can now gap out the second cone by setting $r_2 = 1$, which does not close the band gap and leaves us with the single topological cone at $k_x = 0$, $k_y = 0$ while keeping the bands trivial (the Berry curvature of the cone is compensated by opposite sign curvature hidden at much higher energies in the band). 
+
+We thus have 
+\begin{align*}
+d_1(\bm k) - i d_2(\bm k) =& \sin(k_x) - i\sin(k_y) = \frac{1}{2i} \left(e^{ik_x} - e^{-ik_x}\right) - \frac{1}{2} \left(e^{ik_y} - e^{-ik_y}\right)\\
+d_3(\bm k) =& \frac{r_1 + r_2}{2} + \frac{r_1 - r_2}{2} \cos(k_x) - \cos(2 k_x)  - \cos(k_y) \\
+=& \frac{r_1 + r_2}{2} + \frac{r_1 - r_2}{4} \left(e^{ik_x} + e^{-ik_x}\right) - \frac{1}{2} \left(e^{i2k_x} + e^{-i2k_x}\right)  - \frac{1}{2} \left(e^{ik_y} + e^{-ik_y}\right),
+\end{align*}
+and the real-space expression becomes
+\begin{align*}
+H_{\text{DC}} = & \sum_{\bm j} \left [\frac{r_1 + r_2}{2} \bm c_{\bm{j}}^\dagger \sigma^z \bm c_{\bm{j}} + \left \{\frac{1}{2i} \bm c_{\bm{j}}^\dagger \sigma^x \bm c_{\bm{j + \delta_x}} + \frac{1}{2i} \bm c_{\bm{j}}^\dagger \sigma^y \bm c_{\bm{j + \delta_y}}  \right. \right. \\
+&\left. \left. + \frac{r_1 - r_2}{4} \bm c_{\bm{j}}^\dagger \sigma^z \bm c_{\bm{j  + \delta_x}} - \frac{1}{2} \bm c_{\bm{j}}^\dagger \sigma^z \bm c_{\bm{j  + 2 \delta_x}} - \frac{1}{2} \bm c_{\bm{j}}^\dagger \sigma^z \bm c_{\bm{j  + \delta_y}} + \text{H.c.}\right\} \right ] \\
+=& \sum_{\bm j} \left [\frac{r_1 + r_2}{2} (c_{\bm{j}, a}^\dagger c_{\bm{j}, a} - c_{\bm{j},b}^\dagger c_{\bm{j}, b}) \right. \\ 
+& + \left \{  \frac{1}{2i} (c_{\bm{j}, a}^\dagger c_{\bm{j + \delta_x}, b} + c_{\bm{j},b}^\dagger c_{\bm{j+ \delta_x}, a}) + \frac{r_1 - r_2}{4}  (c_{\bm{j}, a}^\dagger c_{\bm{j + \delta_x}, a} - c_{\bm{j},b}^\dagger c_{\bm{j+ \delta_x}, b})  \right. \\
+&- \frac{1}{2} (c_{\bm{j}, a}^\dagger c_{\bm{j + \delta_y}, b} - c_{\bm{j},b}^\dagger c_{\bm{j+ \delta_y}, a})  - \frac{1}{2}  (c_{\bm{j}, a}^\dagger c_{\bm{j + \delta_y}, a} - c_{\bm{j},b}^\dagger c_{\bm{j+ \delta_y}, b})  \\
+&\left. \left. - \frac{1}{2}  (c_{\bm{j}, a}^\dagger c_{\bm{j + 2 \delta_x}, a} - c_{\bm{j},b}^\dagger c_{\bm{j + 2 \delta_x}, b}) + \text{H.c.} \right \} \right]
+\end{align*}
+
+
+To calculate the spectrum on a cylinder of $N_y$ sites, we only perform the Fourier transform along one direction and obtain:
+
+\begin{align*}
+H_{\text{DC}} = & \sum_{j_y} \sum_{k_x} \left [\left(\frac{r_1 + r_2}{2} + \frac{r_1 - r_2}{2} \cos(k_x) - \cos(2 k_x)\right)\bm c_{k_x, j_y}^\dagger \sigma^z \bm c_{k_x, j_y} \right. \\ 
+&+ \sin(k_x)\bm c_{k_x, j_y}^\dagger \sigma^x \bm c_{k_x, j_y} \\
+&\left. + \left \{ \frac{1}{2i} \bm c_{k_x, j_y}^\dagger \sigma^y \bm c_{k_x, j_y + 1} - \frac{1}{2} \bm c_{k_x, j_y}^\dagger \sigma^z \bm c_{k_x, j_y + 1} + \text{H.c.} \right \} \right ] \\
+= & \sum_{j_y} \sum_{k_x} \left [\left(\frac{r_1 + r_2}{2} + \frac{r_1 - r_2}{2} \cos(k_x) - \frac{1}{2} \cos(2 k_x)\right) \left[c_{k_x, j_y,a}^\dagger  c_{k_x, j_y, a} - c_{k_x, j_y,b}^\dagger  c_{k_x, j_y, b}\right] \right. \\ 
+&+ \sin(k_x) \left[c_{k_x, j_y,a}^\dagger  c_{k_x, j_y, b} + c_{k_x, j_y,b}^\dagger  c_{k_x, j_y, a}\right]  \\
+&+ \left \{ \frac{1}{2i} \left[-ic_{k_x, j_y,a}^\dagger  c_{k_x, j_y+1, b} + i c_{k_x, j_y,b}^\dagger  c_{k_x, j_y + 1, a}\right] \right. \\
+& \left.  \left. - \frac{1}{2}  \left[c_{k_x, j_y,a}^\dagger  c_{k_x, j_y + 1, a} - c_{k_x, j_y,b}^\dagger  c_{k_x, j_y + 1, b}\right]  + \text{H.c.} \right \} \right ]
+\end{align*}
+
+\printnoidxglossaries
+
+\newpage
+\begin{thebibliography}{10}
+\bibitem{Fulga_Bergholtz}
+H. Liu, C. Fulga, E. J. Bergholtz, J. Asboth, {\em Topological fine structure of an energy band}, \href{https://arxiv.org/abs/2312.08436}{arXiv:2312.08436 (2023)}.
+
+\bibitem{theory_TA}
+C. W. Groth, M. Wimmer, A. R. Akhmerov, J. Tworzydło1,2, and C. W. J. Beenakker, {\em Theory of the Topological Anderson Insulator}, \href{https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.103.196805}{Phys. Rev. Lett. {\bfseries 103}, 196805 (2009)}.
+
+\bibitem{QSH_Bernevig}
+B. A. Bernevig, T. L. Hughes, and S.-C. Zhang , {\em Quantum Spin Hall Effect and Topological Phase Transition in HgTe Quantum Wells}, \href{https://www.science.org/doi/10.1126/science.1133734}{Science {\bfseries 314}, 5806 (2006)}.
+
+\bibitem{disordered_CI}
+M. Moreno-Gonzalez, J. Dieplinger, and A. Altland, {\em Topological quantum criticality of the disordered Chern insulator}, \href{https://www.sciencedirect.com/science/article/pii/S000349162300043X?}{Annals of Physics {\bfseries 456}, 169258 (2023)}.
+\end{thebibliography}
+
+
+
+\end{document}
+
