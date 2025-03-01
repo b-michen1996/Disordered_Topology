@@ -1,0 +1,365 @@
+	\documentclass[english]{scrartcl}
+	\usepackage[utf8]{inputenc}  
+	\usepackage[T1]{fontenc}  
+	
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{bm}
+\usepackage{tikz-cd} 
+\usepackage[colorlinks,bookmarks=true,citecolor=blue,linkcolor=red,urlcolor=blue]{hyperref}
+
+\usepackage{graphicx}  
+
+\usepackage{caption}  
+%\usepackage{subcaption}  
+%\usepackage{float}   
+\usepackage{subfig}
+\usepackage{floatrow}
+\usepackage{wrapfig}
+\usepackage{stackengine}
+\usepackage{tensor}
+
+\usepackage{braket}
+\usepackage{comment}
+
+\usepackage[acronym]{glossaries}
+
+\title{Models}
+
+\author{Benjamin Michen}
+\date{\today}
+
+\newcommand{\mc}{\mathcal}
+\newcommand{\mb}{\mathbb}
+\newcommand{\mr}{\mathrm}
+\newcommand{\tb}{\textbf}
+\newcommand{\ti}{{\hat T_I}}
+\newcommand{\eq}[1]{Eq.~(\ref{#1})}
+
+
+
+\makenoidxglossaries
+
+\newacronym{bch}{BCH}{Baker-Campbell-Hausdorff}
+\newacronym{gf}{GF}{Green's function}
+\newacronym{rgf}{rGF}{retarded Green's function}
+\newacronym{wrt}{w.r.t.}{with respect to}
+\newacronym{wlog}{w.l.o.g.}{without loss of generality}
+
+\glsdisablehyper
+
+
+\begin{document}
+\maketitle
+{
+\hypersetup{linkcolor=black}
+\tableofcontents
+}
+
+\newpage
+
+\section{Kubo formula for linear response}
+\subsection{General Kubo formula from retarded GF}
+We discuss the Kubo formula for linear response following Chapter 6 of \cite{MBQT}. Consider the expectation value of an operator in thermodynamic equilibrium:
+\begin{align*}
+\langle A \rangle_0 = \mr{Tr} [\rho_0 A] =  \frac{1}{Z_0} \sum_{n} \bra{n} A \ket{n}e^{- \beta E_n}, \; \text{where} \; \rho_0 = \frac{1}{Z_0}  e^{-\beta H_0}.
+\end{align*}
+Now, we want to calculate the response to an external perturbation driving the system out of equilibrium that we switch on at time $t_0$
+\begin{align*}
+H(t) = H_0 + H' (t)\Theta(t-t_0).
+\end{align*}
+The time-dependent expectation value of $A$ is now obtained from the time-evolved density matrix
+\begin{align*}
+\rho(t) = \frac{1}{Z_0}  \sum_n \ket{n(t)}\bra{n(t)} e^{-\beta E_n}
+\end{align*}
+as 
+\begin{align}
+\langle A \rangle (t) = \mr{Tr} [\rho(t) A] =  \frac{1}{Z_0} \sum_{n} \bra{n(t)} A \ket{n(t)}e^{- \beta E_n}. \label{Eqn:time_dep_A}
+\end{align}
+Note that the time evolution acts coherently on the states in the ensemble represented by the density matrix, but does not change the Boltzmann weights. The states (in the Schrödinger picture) satisfy 
+\begin{align*}
+i \partial_t \ket{n(t)} =  H(t) \ket{n(t)},
+\end{align*}
+and we switch to the interaction picture assuming that $H'$ is small. There, the time-dependence is
+\begin{align*}
+\ket{\hat n(t)} =& e^{i H_0 t} \ket{n(t)} \\
+\Leftrightarrow \ket{n(t)}  = & e^{- i H_0 t} \ket{\hat n(t)} =e^{- i H_0 t} \hat U(t, t_0) \ket{\hat n(t_0)}
+\end{align*}
+and $\ket{\hat n(t_0)} =  e^{i H_0 t_0} \ket{n(t_0)} = \ket{n}$ (we absorb the phase into the initial condition of $\ket{n(t)}$). The time evolution operator in the interaction picture is approximated to first order by
+\begin{align*}
+\hat U(t, t_0) = \mc T \exp[-i \int_{t_0}^t \hat H'(\tilde t) d\tilde t] = \approx 1 -i \int_{t_0}^t \hat H'(\tilde t) d\tilde t.
+\end{align*}
+We insert this into \eq{Eqn:time_dep_A} and find  
+\begin{align*}
+\langle A \rangle (t) \approx& \langle A \rangle_0 - i \int_{t_0}^t \frac{1}{Z_0} \sum_{n} e^{- \beta E_n} \bra{n} \left[\hat A(t) \hat H'(\tilde t) - \hat H'(\tilde t) \hat A(t)\right ] \ket{n} d \tilde t \\
+=& \langle A \rangle_0 - i \int_{t_0}^t \langle \left[\hat A (t), \hat H'(\tilde t)\right ] \rangle_0 d \tilde t.
+\end{align*}
+Note that the operators with a hat are in the interaction picture: $\hat A (t) = e^{i H_0 t} A e^{- i H_0 t}$. We define the linear response as the difference to the equilibrium value:
+\begin{align*}
+\delta A(t)= \langle A(t) \rangle - \langle A \rangle_0 \approx& \int_{t_0}^\infty C_{AH'}^R (t, \tilde t) e^{-\eta (t - \tilde t)} d \tilde t,
+\end{align*}
+where we introduced the general \gls{rgf}
+\begin{align*}
+C_{AH'}^R (t, \tilde t) = -i \Theta (t - \tilde t) \langle \left[\hat A(t), \hat H'(\tilde t)\right ] \rangle_0
+\end{align*}
+and included an infinitesimal damping constant $\eta > 0$ that forces the response to the perturbation at time $\tilde t$ to decay when $t >>  \tilde t$. This is  a natural physical mechanism that is introduced here artificially to cure potential (non-physical) divergences in integrals, in the end we always take $\eta \to 0$.
+
+\subsubsection{In frequency space}
+Consider the Fourier components of the perturbation 
+\begin{align*}
+H'(t) = \int \frac{d \omega}{2 \pi}  H'_\omega e^{- i \omega t} \; \Leftrightarrow \; H'_\omega = \int d t  e^{i \omega t} H'(t).
+\end{align*}
+This can be inserted into the definition of the \gls{rgf};
+\begin{align*}
+C_{AH'}^R (t, \tilde t) = \int \frac{d \omega}{2 \pi}  \underbrace{\left \{ -i \Theta (t - \tilde t) \langle \left[\hat A (t), \hat H'_{\tilde \omega} (\tilde t)\right ] \rangle_0 \right \}}_{C_{AH'_\omega}^R (t - \tilde t) }e^{- i \omega \tilde t}
+\end{align*}
+From the definition of the expectation value and the interaction picture, it is easily seen that $C_{AH'_\omega}^R (t - \tilde t)$ only depends on the time difference. We now consider the case of $t_0 \to - \infty$ to obtain the response to a perturbation after a long time and exclude transient effects:
+\begin{align*}
+\delta A(t)=& \int_{-\infty}^\infty d \tilde t e^{-\eta (t - \tilde t)} C_{AH'}^R (t, \tilde t) = \int_{-\infty}^\infty  d \tilde t e^{-\eta (t - \tilde t)}  \int \frac{d \omega}{2 \pi}  C_{AH'_\omega}^R (t - \tilde t) e^{- i \omega \tilde t} \\
+=&    \int \frac{d \omega}{2 \pi} e^{-i \omega t}   \int_{-\infty}^\infty  d t'  C_{AH'_\omega}^R (t') e^{i (\omega + i \eta) t'} =  \int \frac{d \omega}{2 \pi} e^{-i \omega t}  C_{AH'_\omega}^R (\omega) ,
+\end{align*}
+where we used the substitution $t' = t - \tilde t$ in the last line. The linear response in the frequency domain is thus given by the \gls{rgf} in the frequency domain:
+\begin{align}
+\delta A(\omega)=& C_{AH'_\omega}^R (\omega), \; \text{ where } \nonumber \\
+C_{AH'_\omega}^R (\omega) =& \int_{-\infty}^\infty d t C_{AH'_\omega}^R (t) e^{i (\omega + i \eta)t}. \label{Eqn:Kubo_omega}
+\end{align}
+
+\subsection{Kubo formula for conductivity in a continuum model}
+We want to calculate the linear response of the current density to a small external electric field, which is given by the conductivity. The general relation is
+\begin{align}
+\bm J^\alpha_e(\bm r , t) = \int d t' \int d \bm r' \sum_\beta \sigma^{\alpha, \beta}(\bm r , t, \bm r', t') E^\beta (\bm r', t'), \label{Eqn:Cond_rel}
+\end{align}
+where the conductivity tensor $\sigma^{\alpha, \beta}(\bm r , t, \bm r', t')$ can generally be non-local in space and time. Given external potentials $\phi_\text{ext}$ and $\bm A_\text{ext}$, the electric field is given by
+\begin{align*}
+\bm E (\bm r, t) = - \nabla \phi_\text{ext}(\bm r, t) - \partial_t \bm A_\text{ext} (\bm r, t)
+\end{align*}
+
+
+Let us turn to the linear response to an external electric field. The additional term in the Hamiltonian will be 
+\begin{align*}
+H_\text{ext} = -e \int d \bm r \rho(\bm r) \phi_{ext}(\bm r, t) + e \int d\bm r \bm J(\bm r) \cdot \bm A_{ext}(\bm r, t)
+\end{align*}
+Assuming that there is a vector potential $\bm A_\text{0}$ in equilibrium, the total vector potential is $\bm A = \bm A_\text{ext} + \bm A_0$. The current operator is given by 
+\begin{align*}
+\bm J(\bm r) =  \bm J^\nabla (\bm r) + \frac{e}{m} \bm A (\bm r) \rho (\bm r).
+\end{align*}
+The first part is called the paramagnetic contribution and the second term diagmagnetic contribution. The paramagnetic contribution is
+\begin{align*}
+\bm J^\nabla (\bm r) =& \frac{\hbar}{2 m i} \sum_{\sigma = \uparrow, \downarrow} \left[\Psi_\sigma(\bm r)^\dagger \bigg( \nabla \Psi_\sigma(\bm r) \bigg)  - \bigg( \nabla \Psi_\sigma(\bm r) ^\dagger \bigg ) \Psi_\sigma(\bm r) \right] \\
+=& \frac{\hbar}{m V} \sum_{\sigma = \uparrow, \downarrow} \sum_{\bm k, \bm q} \left ( \bm k + \frac{1}{2} \bm q \right) e^{i \bm q \bm r} a_{\bm k, \sigma}^\dagger a_{\bm k + \bm q, \sigma}.
+\end{align*}
+\gls{wlog} we may set $\phi_\text{ext} = 0$ by choosing an appropriate gauge and write the external electric field as $\bm E_\text{ext} = \partial_t \bm A_\text{ext}$ and thus $\bm A_\text{ext}(\omega) = \frac{i}{\omega} \bm E_\text{ext}(\omega)$. Then the perturbation reads
+\begin{align}
+H_{\text{ext}, \omega} =   \frac{i e}{\omega}  \int d\bm r \bm J(\bm r) \cdot \bm E_\text{ext}(\bm r, \omega) \label{Eqn:current_coupling}
+\end{align}
+in the frequency domain. To express the conductivity relation \eq{Eqn:Cond_rel} in the frequency domain, we note that the frequency tensor only depends on the time difference $\sigma^{\alpha, \beta}(\bm r , t, \bm r', t') = \sigma^{\alpha, \beta}(\bm r , \bm r', t - t')$ because it is a property of the equilibrium system. Thus, we may apply the convolution theorem and find
+\begin{align}
+\bm J^\alpha_e(\bm r , \omega) = \int d \bm r' \sum_\beta \sigma^{\alpha, \beta}(\bm r , \bm r', \omega) E^\beta (\bm r', \omega). \label{Eqn:cond_omega}
+\end{align}
+Since we only want the linear response and \eq{Eqn:current_coupling} is already linear in the external potential, we only keep the equilibrium part of the current operator $\bm J(\bm r) \to \bm J^0(\bm r) =  \bm J^\nabla (\bm r) + \frac{e}{m} \bm A_0 (\bm r) \rho (\bm r)$. The expectation value of  the current operator is 
+\begin{align*}
+\langle \bm J(\bm r, \omega) \rangle = \langle \bm J_0(\bm r, \omega) \rangle + \frac{e}{m}  \langle \bm A_\text{ext}(\bm r, \omega) \rho (\bm r) \rangle.
+\end{align*}
+We may replace $ \langle \bm A_\text{ext}(\bm r, \omega) \rho (\bm r) \rangle \to  \langle \bm A_\text{ext}(\bm r, \omega) \rho (\bm r) \rangle_0$ to linear order in $\bm A_\text{ext}$ and use the Kubo formula on $\langle \bm J_0(\bm r, \omega) \rangle$. In the equilibrium state, there should be no current and thus $\delta \langle \bm J_0 \rangle = \langle \bm J_0 \rangle - \langle \bm J_0 \rangle_0 = \langle \bm J_0 \rangle$. It is time to apply the result of \eq{Eqn:Kubo_omega}, where we replace $A$ by $\bm J_0$ and $H'_\omega$ by $H_{\text{ext}, \omega}$, thereby obtaining $ \langle \bm J_0 (\bm r, \omega)  \rangle = C_{\bm J_0 (\bm r), H_{\text{ext}, \omega}}^R (\omega) $. Summarized, we find
+\begin{align*}
+\langle \bm J(\bm r, \omega) \rangle =C_{\bm J_0 (\bm r), H_{\text{ext}, \omega}}^R (\omega) + \frac{e}{m}   \bm A_\text{ext}(\bm r, \omega) \langle \rho (\bm r) \rangle_0.
+\end{align*}
+More explicitly, the first term is 
+\begin{align*}
+C_{\bm J_0 (\bm r), H_{\text{ext}, \omega}}^R (\omega) = \frac{i e}{\omega} \int d \bm r' C_{\bm J_0 (\bm r),  J_0^\beta (\bm r')}^R (\omega)   E^\beta_\text{ext}(\bm r', \omega).
+\end{align*}
+The electric current is related to the probability current by $\bm J_e = -e \langle \bm J(\bm r, \omega) \rangle$ and we can now compare this to the definition of the conducitivity tensor in \eq{Eqn:cond_omega} (remember that $\bm A_\text{ext}(\omega) = \frac{i}{\omega} \bm E_\text{ext}(\omega)$) to find
+\begin{align}
+\sigma^{\alpha, \beta}(\bm r , \bm r', \omega) = \frac{e^2}{i \omega} \Pi_{\alpha, \beta}^R (\bm r , \bm r', \omega) + \frac{e^2 n(\bm r)}{i \omega m} \delta(\bm r - \bm r') \delta_{\alpha, \beta}, \label{Eqn:cond_omega_Kubo}
+\end{align}
+where we have defined the symbol $\Pi_{\alpha, \beta}^R  (\bm r , \bm r')  = C_{\bm J_0 (\bm r)^\alpha, \bm J_0^\beta (\bm r')}^R$ for the retarded current-current correlation function. In real time, it is given by
+\begin{align*}
+\Pi_{\alpha, \beta}^R  (\bm r , \bm r')(t - \tilde t) = C_{\bm J_0 (\bm r)^\alpha, \bm J_0^\beta (\bm r')}^R(t- \tilde t) = -i \Theta (t - \tilde t) \langle \left[\hat {\bm J_0}^\alpha (\bm r, t), \hat  {\bm J_0}^\beta (\bm r', \tilde t) \right ] \rangle_0.
+\end{align*}
+
+\subsection{Kubo formula for conductance}
+Say now we want to calculate the conductance $I = G V$. We define a coordinate system $(\bm a_\xi, \xi)$ along an equipotential line (or surface) through the sample, where $\bm a_\xi$ are coordinates parametrizing the surface and $\xi$ is perpendicular to it. The electric field is then $\bm E(\bm r) = E(\bm a_\xi, \xi) \hat {\bm \xi}$ and the total current is found by integrating the flux of the current density through the equipotential surface:
+\begin{align*}
+I_e =& \int d {\bm a_\xi} \left[ \hat {\bm \xi} \cdot \bm J_e (\bm a_\xi, \xi) \right] = \int d {\bm a_\xi} \int d \bm r'  \hat {\bm \xi} \cdot \bm \sigma (\bm r , \bm r', \omega = 0) \bm E (\bm r', 0) \\
+=&\int d {\bm a_\xi} \int d {\bm a_\xi'} \int d \xi'  \hat {\bm \xi} \cdot \sigma (\bm a_\xi, \xi, \bm a_\xi', \xi', \omega = 0)  \hat {\bm \xi'} E(\bm a_\xi', \xi')
+\end{align*}
+We note that the total current can be written as $I_e(\xi) = \int d \bm a_\xi \hat {\bm \xi} \cdot \bm J$ and only consider the real part of the above equation. We rewrite it as a correlation function of the total currents
+\begin{align*}
+I_e(\xi)=& \lim_{\omega \to 0}\int d \xi' \mr{Re} \left[ \frac{e^2}{i \omega} C_{I(\xi), I(\xi'), \omega}^R \right] E(\xi') := \int d \xi'  G(\xi, \xi'), E(\xi')
+\end{align*}
+where the integrals over $\bm a_\xi$ have been absorbed into the definition of the correlation function. Due to current-conservation, the current should not depend on $\xi$, so $G(\xi, \xi')$ is actually independent of $\xi$. It can also be shown that $G(\xi, \xi')$ is symmetric and thus cannot depend on $\xi'$ either. Now, only the integral $\int d \xi' E(\xi') = - V$ remains and we can read off the conductance:
+\begin{align*}
+G =& \lim_{\omega \to 0} \left[\frac{e^2}{i \omega} C_{I, I}^R (\omega) \right].
+\end{align*}
+The retarded current-current correlation function reads in the time domain
+\begin{align*}
+C_{I, I}^R (t, \tilde t) = -i \Theta (t - \tilde t) \langle \left[\hat I (t), \hat  I (\tilde t) \right ] \rangle_0,
+\end{align*}
+where the operator $\hat I (t)$ denotes the total current through an arbitrary cross-section in the interaction picture.
+
+\section{CS theory for Hall response}
+Consider a genereic tight-binding model coupled to a static gauge field via a Peierls phase
+\begin{align*}
+H[A] = \sum_{m,n} \left[c_{m, \alpha}^\dagger h_{m,n}^{\alpha, \beta} c_{n, \beta} e^{i A_{m,n}} + \text{H.c.} \right] + \sum_m  A_{0, m} c_{m, \alpha}^\dagger c_{m, \alpha},
+\end{align*}
+see e.g. \cite{TFT_TI}. The partition function at temperature $\beta$ is given by the path integral
+\begin{align*}
+Z[A] =& \int_{\substack{c(0) = -c(\beta) \\ \bar c(0) = -\bar c(\beta)}} D[c] D[\bar c] \exp\left(-\int_0^\beta \left[ \sum_{m}  \bar c_{m, \alpha} (\partial_\tau - \mu) c_{m, \alpha} + H(\bar c, c, A) \right] \right) \\
+=& \int_{\substack{c(0) = -c(\beta) \\ \bar c(0) = -\bar c(\beta)}} D[c] D[\bar c] \exp\left(i \int_{-i \beta}^{0} \left[ \sum_{m}  \bar c_{m, \alpha} (i\partial_t + \mu) c_{m, \alpha} - H(\bar c, c, A) \right] \right)
+\end{align*}
+where the second line is the real-time formulation where $\tau \to i t$, $\partial_\tau \to -i \partial_t$ \cite{TFT_TI, Altland_Simons}. We may now integrate out the fermions to obtain the effective action for the external gauge field from the partition function on a formal level
+\begin{align}
+e^{i S_\text{eff}[A]} = Z[A] = \text{det}\left[ (i \partial_t + \mu - A_{m,0}) \delta_{m,n}^{\alpha,\beta} - h_{m,n}^{\alpha,\beta} e^{i A_{m,n}}  \right] \label{Eqn:Effective_action}
+\end{align}
+In two spatial dimensions, the leading order term in the effective action is the Chern-Simons term
+\begin{align*}
+S_\text{eff}[A] = \frac{N_2}{4 \pi} \int dt \int d^2x \epsilon^{\mu \nu \rho} A_\mu \partial_\nu A_\rho,
+\end{align*}
+which determines the conductance through
+\begin{align*}
+\langle j^\mu \rangle = \frac{\delta  S_\text{eff}[A]}{\delta A^\mu} = -N_2 \frac{e^2}{2 \pi \hbar} (\sigma^x \bm E)^\mu.
+\end{align*}
+Due to gauge invariance, the coefficient $N_2$ must be integer-valued and can be determined by evaluating a one-loop Feynman diagram appearing in the perturbative calculation of \eq{Eqn:Effective_action} \cite{Topological_order_parameters} {\color{red} [More details on that later!]}
+\begin{align}
+N_2 = \frac{\pi}{3} \int \frac{d^3 k}{(2\pi)^3} \epsilon^{\mu \nu \rho} \mr{Tr} [G (\partial_\mu G^{-1}) G (\partial_\nu G^{-1}) G (\partial_\rho G^{-1})]. \label{Eqn:winding_number_GF}
+\end{align}
+The above integral is a winding number that measures the homotopy group of the retarded Green's function in momentum and frequency space $G(\bm k, \omega)$. For a disorder-free system, it is given by $G^0(\bm k, \omega) = [i \omega - (h(\bm k) - \mu)]^{-1}$, which is also the setting in which the above result can be derived analytically. However, as long as there is no phase transition, i.e. no singularity of $G$, the quantization of the CS level cannot change and neither can the value of the invariant $N_2$, which generalizes this result to interacting and disordered systems.  
+
+\subsection{Getting rid of the $\omega$ integral}
+To eliminate the $d \omega$ integral of \eq{Eqn:winding_number_GF}, we start by diagonalizing the inverse \gls{rgf} as 
+\begin{align*}
+G^{-1}(i \omega, \bm k) \ket{\alpha(i \omega, \bm k)} = \mu(i \omega, \bm k) \ket{\alpha(i \omega, \bm k)}.
+\end{align*}
+From the Lehmann representation, it is readily shown that $(G^{-1})^\dagger(i \omega, \bm k )^\dagger = G^{-1}(-i \omega, \bm k )$ and thus $(G^{-1})^\dagger(0, \bm k )^\dagger = G^{-1}(0, \bm k)$, which implies that $\mu(0, \bm k)$ are a set of real numbers {\color{red} This probably only holds if there is a gap at $E = 0$!}. We now divide the eigenvectors into the set where $\mu(0, \bm k) > 0$ (R-zeros) and $\mu(0, \bm k) < 0$ (L-zeros). At each $k$, the R-subspace is orthogonal to the L-subspace and we may consider it a generalization of the set of occupied bands. This makes it reasonable to consider the generalized Chern number 
+
+\begin{align}
+C_1 =& \frac{1}{2\pi} \int d^2 k \mathcal F_{xy} \quad \text{where} \quad \mathcal F_{ij} = \partial_i \mathcal A_j - \partial_j A_i \quad \text{and} \nonumber \\
+A_i  =& -i  \sum_{\alpha \in \text{R-space}} \bra{\bm k, \alpha} \partial k_i \ket{\bm k, \alpha}, \label{Eqn:generalized_chern_number}
+\end{align}
+where $\ket{\bm k, \alpha}$ is an orthonormal basis of $k$-space. To show that indeed $C_1 = N_2$, we consider the Lehmann representation
+at zero temperature:
+\begin{align*}
+G_{\alpha, \beta} (i\omega, \bm k) = \sum_{m} \left[\frac{\bra{0} c_{k_\alpha} \ket{m}\bra{m} c_{k_\beta}^\dagger \ket{0}}{i\omega - (E_m - E_0)} + \frac{\bra{m} c_{k_\alpha} \ket{0}\bra{0} c_{k_\beta}^\dagger \ket{m}}{i\omega + (E_m - E_0)}\right],
+\end{align*}
+where $\ket{m}$ are exact eigenvectors of $H - \mu \hat N$ and we have assumed the existence of a single ground state. Our next step is to decompose the \gls{gf} into a Hermitian and an Anti-Hermitian part as $G = G_1 + i G_2$ with  
+\begin{align*}
+(G_2)_{\alpha, \beta} (i\omega, \bm k) =& -\sum_{m} \frac{\omega [\bra{0} c_{k_\alpha} \ket{m}\bra{m} c_{k_\beta}^\dagger \ket{0} + \bra{m} c_{k_\alpha} \ket{0}\bra{0} c_{k_\beta}^\dagger \ket{m}]}{\omega^2 + (E_m - E_0)^2} \\
+=&  -\sum_{m} d_m  [u_{m, \alpha}^* (\bm k) u_{m, \beta} (\bm k) + v_{m, \alpha}^* (\bm k) v_{m, \beta} (\bm k) ]. 
+\end{align*}
+In the second line we defined $u_{m, \alpha}(\bm k) = \bra{m} c_{k_\alpha}^\dagger \ket{0}$, $v_{m, \alpha}(\bm k) = \bra{0} c_{k_\alpha}^\dagger \ket{m}$, and  $d_m(i \omega) = \omega  / [\omega^2 + (E_m - E_0)^2]$. Note that $\text{sign} (d_m) = \text{sign} (\omega)$. The expectation of $G_2$ with an arbitrary vector is  
+
+\begin{align*}
+\bra{a} G_2 \ket{a} = \sum_{\alpha, \beta} a_\alpha^* G_{\alpha, \beta} a_\beta = -\sum_m d_m [|\sum_\alpha a_\alpha u_{m,\alpha}|^2 + |\sum_\alpha a_\alpha v_{m,\alpha}|^2].
+\end{align*}
+This immediately yields 
+
+\begin{align}
+\text{sign} (\bra{a} G_2(i \omega, \bm k) \ket{a}) = -\text{sign} (d_m) = -\text{sign} (\omega). \label{Eqn:sign_relation} 
+\end{align}
+If $\ket{a}$ is an eigenvector of  $G = G_1 + i G_2$, the eigenvalue is $\mu_a^{-1} = \braket{a|a}^{-1} \bra{a} (G_1 + i G_2) \ket{a}$ and thus  $\text{Im} (\mu_a^{-1}) = \braket{a|a}^{-1} \bra{a} G_2 \ket{a}$, so $\text{sign} [\text{Im} (\mu_a^{-1}(i\omega))] = -\text{sign} [\omega]$ and 
+\begin{align}
+\text{sign} [\text{Im} (\mu_a(i\omega))] = \text{sign} [\omega].
+\end{align}
+Now we introduce a smooth deformation of $G$ by 
+\begin{align}
+G(i \omega, \bm k,\lambda) = (1- \lambda)  G(i \omega, \bm k) +  \lambda[i\omega + G^{-1}(0, \bm k)]^{-1}.  \label{Eqn:deformation_i_omega}
+\end{align}
+We want to show that this deformation is non-singular, i.e. that there are no zero eigenvalues for any $\lambda$. We note that for $i\omega = 0$, we have $G(0, \bm k,\lambda) = G(0, \bm k) \; \forall \; \lambda$, which is non-singular by assumption. At general $i \omega \neq 0$, take the eigenvectors 
+\begin{align*}
+G(i \omega, \bm k,\lambda) \ket{\alpha(i \omega, \bm k, \lambda)} = \mu_\alpha^{-1}(i \omega, \bm k, \lambda) \ket{\alpha(i \omega, \bm k, \lambda)} 
+\end{align*}
+and their eigenvalues
+\begin{align*}
+\mu_\alpha^{-1}(i \omega, \bm k, \lambda) = \braket{\alpha|\alpha}^{-1}  \bra{\alpha} G(i \omega, \bm k,\lambda) \ket{\alpha}.
+\end{align*}
+We have assumed that $G^{-1}(0, \bm k)$ is Hermitian, so we may find an orthonormal eigenbasis $\{\ket{s(k)}\}$ with associated eigenvalue $\epsilon_s(k)$ of  $-G^{-1}(0, \bm k)$ and expand
+\begin{align*}
+\ket{\alpha(i \omega, \bm k, \lambda)}  = \sum_s \alpha_s(i \omega, \bm k, \lambda) \ket{s(k)}.
+\end{align*}
+After decomposing $G(i \omega, \bm k) = G_1(i \omega, \bm k) + i G_2(i \omega, \bm k)$, it is straightforward to derive the expression for the imaginary part of $\mu_\alpha^{-1}(i \omega, \bm k, \lambda)$:
+\begin{align*}
+\text{Im}[\mu_\alpha^{-1}(i \omega, \bm k, \lambda)] = \braket{\alpha|\alpha}^{-1} [(1- \lambda) \bra{\alpha} G_2(i \omega, \bm k) \ket{\alpha} - \lambda \omega \sum_s \frac{|\alpha_s|^2}{\omega^2 + \epsilon_s^2}.
+\end{align*}
+From \eq{Eqn:sign_relation}, we immediately see that $\text{Im}[\mu_\alpha^{-1}(i \omega, \bm k, \lambda)] \neq 0$ for $i\omega \neq 0$. By assumption $\text{Re}[\mu_\alpha^{-1}(i \omega = 0, \bm k, \lambda)] \neq 0$, so there is no singularity of $G(i \omega, \bm k,\lambda)$ at any $\lambda$. Thus, the winding number \eq{Eqn:winding_number_GF} is well-defined and cannot change as a function of $\lambda$, meaning that we may calculate it for $G(i \omega, \bm k,\lambda = 1)$, which only requires knowledge of $G(i \omega = 0, \bm k)$ and can easily be demonstrated to be equivalent to \eq{Eqn:generalized_chern_number}. 
+
+\subsection{Generalization to retarded GF}
+\subsubsection{Smooth deformation}
+The problem with the previous section is that it requires a gap, i.e. the retarded and advanced \gls{gf} must be the same: $G(i\omega \to 0 + i 0^+, \bm k) = G(i\omega \to 0 + i 0^-, \bm k)$. We would like to make it work for the case where there is no gap but the all eigenvalues of the \gls{rgf} $G^R(\omega, \bm k) = G(i\omega \to 0 + i 0^+, \bm k)$ still have a  non-zero imaginary part. First of all, we note that the invariant \eq{Eqn:winding_number_GF} can also be calculated from the \gls{rgf} (at least Ref.~\cite{TFT_TI} does that), which is also necessary if there is no gap. {\color{red} Probably using the \gls{rgf} in \eq{Eqn:winding_number_GF} is only valid as long as T = 0. Then, disorder-scattering is necessary to introduce a finite imaginary part, because interactions will only do that at $T >0$.}
+
+Generally, all eigenvalues $\mu_\alpha^{-1}(\omega, \bm k)$ of $G^R(\omega, \bm k)$ should have negative imaginary part. We would thus expect that there is a deformation
+\begin{align*}
+G^R(\omega, \bm k) \to [\omega + (G^R)^{-1}(0, \bm k)]^{-1}
+\end{align*}
+that is smooth in the sense of all eigenvalues $\mu_\alpha^{-1}(\omega, \bm k, \lambda)$ always having a finite negative imaginary part, thus keeping the winding number \eq{Eqn:winding_number_GF} well-defined. We first prove a more general statement than all eigenvalues having negative imaginary part using the Käll\'en-Lehman representation of the \gls{rgf} at zero temperature. It is given by
+\begin{align*}
+G^R_{\alpha, \beta} (\omega, \bm k) =& \sum_{m} \left[\frac{\bra{0} c_{k_\alpha} \ket{m}\bra{m} c_{k_\beta}^\dagger \ket{0}}{\omega +i\eta - \Delta_m} + \frac{\bra{m} c_{k_\alpha} \ket{0}\bra{0} c_{k_\beta}^\dagger \ket{m}}{\omega + i\eta + \Delta_m}\right] \\
+=& \sum_{m} \left[\frac{(\omega - \Delta_m) - i \eta}{(\omega - \Delta_m)^2 + \eta^2} \bra{0} c_{k_\alpha} \ket{m}\bra{m} c_{k_\beta}^\dagger \ket{0} \right . \\
+& \quad \left. +\frac{(\omega + \Delta_m) - i \eta}{(\omega + \Delta_m)^2 + \eta^2}  \bra{m} c_{k_\alpha} \ket{0}\bra{0} c_{k_\beta}^\dagger \ket{m}\right] \\
+=& \sum_{m} \left \{d_{m, -}[(\omega - \Delta_m) - i \eta] u_{m, \alpha}^* (\bm k) u_{m, \beta} (\bm k) \right . \\
+& \quad \left. + d_{m, +}[(\omega + \Delta_m) - i \eta]  v_{m, \alpha}^* (\bm k) v_{m, \beta} (\bm k)  \right \} 
+\end{align*}
+where $\ket{m}$ are exact eigenvectors of $H - \mu \hat N$, $\Delta_m = E_m - E_0$, and we assumed the existence of a single ground state. 
+In the last line, we defined $u_{m, \alpha}(\bm k) = \bra{m} c_{k_\alpha}^\dagger \ket{0}$, $v_{m, \alpha}(\bm k) = \bra{0} c_{k_\alpha}^\dagger \ket{m}$, and  $d_{m, \pm}(\omega + i \eta) = 1 / [(\omega \pm \Delta_m)^2 + \eta^2] > 0$. The expectation value of $G^R_{\alpha, \beta} (\omega, \bm k) $ with an arbitrary vector is 
+\begin{align*}
+\bra{a} G^R(\omega, \bm k)  \ket{a} =& \sum_{\alpha, \beta} a_\alpha^* G^R_{\alpha, \beta} a_\beta \\
+=& \sum_{m} \left \{d_{m, -}[(\omega - \Delta_m) - i \eta] \left |\sum_\alpha a_\alpha u_{m,\alpha}\right |^2 \right . \\
+& \quad \left. + d_{m, +}[(\omega + \Delta_m) - i \eta]  \left |\sum_\alpha a_\alpha v_{m,\alpha}\right |^2  \right \}
+\end{align*}
+and thus 
+\begin{align}
+\text{Im} \left[\bra{a} G^R(\omega, \bm k)  \ket{a} \right] < 0. \label{Eqn:inequality_rGF}
+\end{align}
+{\color{red}Is this already a consequence of all eigenvalues having a negative imaginary part? I couldn't find anything on that and seems not to be straightforward to prove for a general non-Hermitian matrix...} As a side remark, if there is no disorder, but only interactions, the imaginary part may only scale with the infinitesimal regularization $\eta >0$ since we are at zero temperature.
+
+Now we take the interpolation 
+\begin{align}
+G^R(\omega, \bm k,\lambda) = \left [\lambda \omega + \left [(1- \lambda)  G^R(\omega, \bm k) + \lambda G^R(0, \bm k) \right]^{-1} \right]^{-1}.  \label{Eqn:deformation_r_GF}
+\end{align}
+which has the property $G^R(\omega, \bm k,\lambda = 0) =  G^R(\omega, \bm k)$ and $G^R(\omega, \bm k,\lambda = 1) = [\omega + (G^R)^{-1}(0, \bm k)]^{-1}$. From \eq{Eqn:inequality_rGF}, we see that
+
+\begin{align*}
+\text{Im} \left[\bra{a} \left [(1- \lambda)  G^R(\omega, \bm k) + \lambda G^R(0, \bm k) \right] \ket{a} \right] < 0,
+\end{align*}
+for any vector $\ket{a}$, so this matrix will only have eigenvalues with negative imaginary part. Consequently, $G^R(\omega, \bm k,\lambda)$ from \eq{Eqn:deformation_r_GF} only has eigenvalues with negative imaginary part as well and is thus smooth in the sense defined before.
+
+\subsubsection{Calculation of the invariant}
+We can now calculate the invariant \eq{Eqn:winding_number_GF} using only the \gls{rgf} at zero frequency from 
+\begin{align*}
+G(\omega, \bm k) = [\omega + (G^R)^{-1}(0, \bm k)]^{-1} = [\omega - H_e(k)]^{-1},
+\end{align*}
+where $H_e(k) = - (G^R)^{-1}(0, \bm k)$ is the standard effective Hamiltonian. 
+Under the assumption that $H_e(k)$ is diagonalizable (in other words it doesn't contain exceptional points), the \gls{gf} writes
+\begin{align*}
+G(\omega, \bm k) =& S(\bm k) \text{diag}\left[ \frac{1}{\omega - \epsilon_1(\bm k)},\frac{1}{\omega - \epsilon_2(\bm k)}, ..., \frac{1}{\omega - \epsilon_n(\bm k)}\right] S^{-1}(\bm k), \\
+G^{-1}(\omega, \bm k) =& S(\bm k) \text{diag}\left[\omega - \epsilon_1(\bm k),\omega - \epsilon_2(\bm k), ..., \omega - \epsilon_n(\bm k)\right] S^{-1}(\bm k),
+\end{align*}
+where $S(\bm k)$ is the matrix that diagonalizes the effective Hamiltonian and contains its eigenvectors as columns. After summing over all indices of $\epsilon^{\mu \nu \rho}$ and using the cyclic invariance of the trace, we may write the winding number as
+
+\begin{align}
+N_2 = \frac{1}{2} \int \frac{d^2 k}{(2\pi)^2} \int_{-\infty}^\infty d \omega \mr{Tr}\left [G (\partial_\omega G^{-1}) \left \{G (\partial_{k_x} G^{-1}) G (\partial_{k_y} G^{-1}) - G (\partial_{k_x} G^{-1}) G (\partial_{k_y} G^{-1}) \right \} \right ]. \label{Eqn:winding_number_GF}
+\end{align}
+
+\printnoidxglossaries
+
+\newpage
+\begin{thebibliography}{10}
+\bibitem{MBQT} H. Bruus and K. Flensberg, {\em Many-body quantum theory in condensed matter physics}, {Oxford University Press, 2004}.
+
+\bibitem{Mahan} G. D. Mahan, {\em  Many-Particle Physics}, {Springer, 2000}.
+
+\bibitem{TFT_TI}
+X.-L. Qi, T. L. Hughes, and S.-C. Zhang {\em Topological field theory of time-reversal invariant insulators}, \href{Xiao-Liang Qi, Taylor L. Hughes, and Shou-Cheng Zhang}{Phys. Rev. B {\bfseries 78,}, 195424 (2008)}.
+
+\bibitem{Topological_order_parameters}
+Z. Wang, X.-L. Qi, and S.-C. Zhang, {\em Topological Order Parameters for Interacting Topological Insulators}, \href{https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.105.256803}{Phys. Rev. Lett. {\bfseries 105}, 256803 (2010)}.
+
+\bibitem{Altland_Simons}
+A. Altand and B. Simons, {\em Condensed Matter Field Theory} Cambridge University Press, (2010).
+
+\end{thebibliography}
+
+
+
+\end{document}
+
