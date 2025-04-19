@@ -206,7 +206,7 @@ def Omega_func(kx, ky, epsilon_1, epsilon_2, gamma, gamma_2, band = -1):
 	
 	res = - band * res / (2 * (E ** 3))
 	
-	return -res, E
+	return res, E
 
 
 

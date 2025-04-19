@@ -3,9 +3,7 @@ import numpy as np
 
 from matplotlib import pyplot as plt
 import matplotlib.colors as colors
-import kwant
 from scipy.interpolate import CubicSpline as CS
-from  scipy.integrate import nquad as q_int
 from matplotlib.patches import PathPatch
 
 import Berry_codes
