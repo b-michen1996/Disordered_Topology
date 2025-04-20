@@ -116,7 +116,7 @@ def Fig_2(location_a, location_b, location_data_inset_a, location_data_inset_b):
     x_data_inset_a = np.genfromtxt(location_data_inset_b + "/Nx_vals.txt", dtype= float, delimiter=' ') 
     data_inset_a = np.genfromtxt(location_data_inset_a + "/result.txt", dtype= float, delimiter=' ') 
     
-    data_inset_a = data_inset_a[:, :7]
+    #data_inset_a = data_inset_a[:, :7]
     
     data_inset_a_mean = np.mean(data_inset_a, axis = 1)
     data_inset_a_std = np.std(data_inset_a, axis = 1)
@@ -124,7 +124,7 @@ def Fig_2(location_a, location_b, location_data_inset_a, location_data_inset_b):
     x_data_inset_b = np.genfromtxt(location_data_inset_b + "/Nx_vals.txt", dtype= float, delimiter=' ') 
     data_inset_b = np.genfromtxt(location_data_inset_b + "/result.txt", dtype= float, delimiter=' ') 
     
-    data_inset_b = data_inset_b[:, :7]
+    #data_inset_b = data_inset_b[:, :7]
     
     data_inset_b_mean = np.mean(data_inset_b, axis = 1)
     data_inset_b_std = np.std(data_inset_b, axis = 1)
@@ -136,11 +136,11 @@ def Fig_2(location_a, location_b, location_data_inset_a, location_data_inset_b):
         
     a1_inset = a1.inset_axes(
     [x_0, y_0, inset_width, inset_height],
-    xlim=(400, 2500), ylim=(0, 2))
+    xlim=(400, 3000), ylim=(0, 2))
     
     a2_inset = a2.inset_axes(
     [x_0, y_0, inset_width, inset_height],
-    xlim=(400, 2500), ylim=(0, 2))
+    xlim=(400, 3000), ylim=(0, 2))
     
     a1_inset.fill_between(x_data_inset_a, data_inset_a_mean - data_inset_a_std, data_inset_a_mean + data_inset_a_std, facecolor = "gray", lw = 0)
     a1_inset.plot(x_data_inset_a, data_inset_a_mean, color = "red")
@@ -150,12 +150,12 @@ def Fig_2(location_a, location_b, location_data_inset_a, location_data_inset_b):
     a2_inset.plot(x_data_inset_b, data_inset_b_mean, color = "red")
     a2_inset.axhline(y=1, color='black', linestyle='--')
     
-    a1_inset.set_xlabel(r"$N_{x}$", fontsize = label_scale_inset * label_size)    
+    a1_inset.set_xlabel(r"$10^{-3} N_{x}$", fontsize = label_scale_inset * label_size)    
     a1_inset.set_ylabel(r"$\sigma_{xx}$", fontsize = label_scale_inset * label_size, rotation='horizontal')
     a1_inset.xaxis.set_label_coords(0.8, 2.05)
     a1_inset.yaxis.set_label_coords(-0.25, 0.1)
     
-    a2_inset.set_xlabel(r"$N_{x}$", fontsize = label_scale_inset * label_size)    
+    a2_inset.set_xlabel(r"$10^{-3} N_{x}$", fontsize = label_scale_inset * label_size)    
     a2_inset.set_ylabel(r"$\sigma_{xx}$", fontsize = label_scale_inset * label_size, rotation='horizontal')
     a2_inset.xaxis.set_label_coords(0.8, 2.05)
     a2_inset.yaxis.set_label_coords(-0.25, 0.1)
@@ -169,21 +169,24 @@ def Fig_2(location_a, location_b, location_data_inset_a, location_data_inset_b):
     a1_inset.minorticks_off()
     a2_inset.minorticks_off()
     
-    a1_inset.set_xticks([600, 1200, 1800])
-    a1_inset.set_xticklabels([r"$6\mathrm{e}2$", r"$1.2\mathrm{e}3$", r"$1.8\mathrm{e}3$"])
+    a1_inset.set_xticks([500, 1000, 1500, 2000, 2500, 3000])
+    a1_inset.set_xticklabels(["", r"$1$", "", r"$2$","", r"$3$"])
     
     a1_inset.set_yticks([0, 1, 2])
     a1_inset.set_yticklabels([r"$0$", r"$1$", r"$2$"])
     
-    a1_inset.text(0.2, 0.62, r"$E_\mathrm{F} = -1$", fontsize = label_scale_inset * label_size, transform=a1_inset.transAxes)
+    a1_inset.text(0.25, 0.1, r"$E_\mathrm{F} = W = 1$", fontsize = label_scale_inset * label_size, transform=a1_inset.transAxes)
     
-    a2_inset.set_xticks([600, 1200, 1800])
-    a2_inset.set_xticklabels([r"$6\mathrm{e}2$", r"$1.2\mathrm{e}3$", r"$1.8\mathrm{e}3$"])
+    #a2_inset.set_xticks([600, 1200, 1800])
+    #a2_inset.set_xticklabels([r"$6\mathrm{e}2$", r"$1.2\mathrm{e}3$", r"$1.8\mathrm{e}3$"])
+    
+    a2_inset.set_xticks([500, 1000, 1500, 2000, 2500, 3000])
+    a2_inset.set_xticklabels(["", r"$1$", "", r"$2$","", r"$3$"])
     
     a2_inset.set_yticks([0, 1, 2])
     a2_inset.set_yticklabels([r"$0$", r"$1$", r"$2$"])
     
-    a2_inset.text(0.2, 0.625, r"$E_\mathrm{F} = W = 1$", fontsize = label_scale_inset * label_size, transform=a2_inset.transAxes)
+    a2_inset.text(0.25, 0.625, r"$E_\mathrm{F} = W = 1$", fontsize = label_scale_inset * label_size, transform=a2_inset.transAxes)
     
     fig.savefig("Fig_2_publication.png",  bbox_inches='tight', dpi = 600)
     
@@ -283,8 +286,8 @@ def main():
     location_G_final_V3_a = "G_final_V3_results/G_final_V3_run_3"
     location_G_final_V3_b = "G_final_V3_results/G_final_V3_run_4"
     
-    location_data_inset_a = "G_final_V3_size_scaling_run_10"
-    location_data_inset_b = "G_final_V3_size_scaling_run_11"
+    location_data_inset_a = "G_final_V3_size_scaling_run_12"
+    location_data_inset_b = "G_final_V3_size_scaling_run_13"
         
     Fig_2(location_G_final_V3_a, location_G_final_V3_b, location_data_inset_a, location_data_inset_b)
     #Fig_2_vertical(location_G_final_V3_a, location_G_final_V3_b)

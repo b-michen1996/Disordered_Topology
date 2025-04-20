@@ -1,0 +1,302 @@
+\documentclass[aps,prl,amsmath,amssymb,twocolumn]{revtex4-2}
+
+%% Language and font encodings
+\usepackage{graphicx}
+%\usepackage{subfigure}
+\usepackage{adjustbox}
+\usepackage{bm}
+\usepackage{color}
+\usepackage{braket}
+\usepackage{standalone}
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{mathrsfs}
+\usepackage[utf8]{inputenc}
+\usepackage{dsfont}
+\usepackage[colorlinks,bookmarks=true,citecolor=blue,linkcolor=red,urlcolor=blue]{hyperref}
+
+
+\newcommand{\JCB}[1]{{\color{green} #1}}
+\newcommand{\BM}[1]{{\color{orange} #1}}
+\newcommand{\eq}[1]{Eq.~(\ref{#1})}
+
+\usepackage{bbm}
+\usepackage[caption = false, labelformat=simple]{subfig}
+%\renewcommand{\thesubfigure}{\relax}  % Do nothing for the counter »subfigure«
+\usepackage{floatrow}
+\usepackage{verbatim}
+
+\captionsetup{labelfont=normalfont,
+	justification=raggedright,
+	format=plain}
+	
+\usepackage[acronym]{glossaries}
+\makenoidxglossaries
+
+\newacronym{iqh}{IQH}{integer quantum Hall}
+\newacronym{pbc}{PBC}{periodic boundary conditions}
+\newacronym{obc}{OBC}{open boundary conditions}
+\newacronym{dos}{DOS}{density of states}
+\newacronym{gf}{GF}{Green's function}
+
+
+\glsdisablehyper
+
+\begin{document}
+
+\title{Quantum Hall Effect without Chern Bands}
+\author{Benjamin Michen}
+\email{benjamin.michen@tu-dresden.de}
+\author{Jan Carl Budich}
+\email{jan.budich@tu-dresden.de}
+\affiliation{Institute of Theoretical Physics${\rm ,}$ Technische Universit\"{a}t Dresden and W\"{u}rzburg-Dresden Cluster of Excellence ct.qmat${\rm ,}$ 01062 Dresden${\rm ,}$ Germany}
+\date{\today}
+
+\begin{abstract}
+We report on the observation of a quantized Hall conductance in a system consisting only of trivial Chern bands. Specifically, an \gls{iqh} phase emerges in a broad Fermi energy window of our system upon the addition of a random impurity potential. In contrast to the well-studied phenomenon of the Anderson insulator, this should not be seen as a disorder-driven phase transition from a trivial insulator to a topological one, but instead as the formation of a non-trivial mobility gap through Anderson localization deep in the bulk of a band with vanishing Chern number. In the thermodynamic limit, this effect should require only an infinitesimal disorder strength and is in that sense already encoded in the clean band structure. We find evidence of this topological fine structure by evaluating a variant of a local Chern marker, the spectral localizer, that is found to take non-zero values already in the clean system. Our findings are corroborated by exact transport calculations using the KWANT package. 
+\end{abstract}
+
+\maketitle
+
+The quantum Hall effect, arguably one of the most remarkable phenomena occurring in nature, is of foundational importance to the broad research frontier of topological matter. Establishing topology as the rationale behind physical robustness, the experimental observation of a transverse conductance $\sigma_{xy}$ quantized in units of $e^2/h$ has been explained with theory in terms of a topological invariant known as the first Chern number. This represents a pioneering example of the by now well established paradigm of topological Bloch bands characterized by global properties, the discrete value of which remains unchanged under continuous perturbations. Adiabatic continuity is in this context largely synonymous with the existence of a finite energy gap that must close at a topological quantum phase transition for a topological property to change.
+
+Surprisingly, in this work we provide strong numerical evidence that the topological quantization of the Hall conductance can occur in an extended parameter regime of a microscopic lattice model, both Bloch bands of which are topologically trivial. Specifically, when placing the Fermi energy $E_F$ within a wide energy window in either band of our model, switching on a simple Gaussian on-site disorder potential $W$ stabilizes a Quantum Hall effect with $\sigma_{xy} = \pm e^2/h$, while $\sigma_{xy}$ has a non-universal $E_F$-dependent value at $W=0$ (see Fig.~\ref{fig:one}). We attribute this behavior to the formation of a topologically non-trivial mobility gap with the onset of disorder. In this light, the clean metallic situation with $E_F$ inside the eligible window may be seen as an extended critical region that is nudged into a stable quantum Hall phase by a generic disorder potential.
+ 
+\begin{figure}[htp!]	 
+{\includegraphics[trim={0.75cm 0cm 0.75cm 0.cm}, width=0.95\linewidth]{Fig_1_publication.png}}
+\caption{a) Band structure of the model at parameters $r = 1.5$, $\epsilon_1 = 0.3$, $\epsilon_2 = 2$, $\gamma  =2$, and $\gamma_2 = 0.3$. The colorcode illustrates the Hall conductance $\sigma_{xy}$ of the clean system as a function of Fermi energy $E_\mathrm{F}$, which is equal to the accumulated Berry curvature of all states lying below $E_\mathrm{F}$. (b) The Hall conductance as a function of Fermi energy for the clean system and at disorder strength $W = 1.2$. The result for the disordered system is obtained from a Chebyshev expansion of the Kubo-Bastin formula for a sytem size of $N_x = 500$, $N_y = 200$ and expansion parameters $R = 5$ and $S = 18$. \BM{This is only a preliminary data set, I will generate a nicer one...}
+ }\label{fig:one}
+\end{figure}
+
+On the other hand, we emphasize that the underlying clean band structure of our model may be continuously deformed into a trivial atomic insulator. That way, all structure is removed from the entire microscopic lattice system without a topological quantum phase transition, which clearly makes the phenomena reported in this work quite different from the familiar quantum Hall scenarios based on Chern bands and Landau levels, respectively. As we detail below, our findings also differ qualitatively from several other settings in which topological phenomena have been identified in unconventional relation to Chern numbers [cite Floquet anomoalous edge states, QHE effect without single particle Hamiltonian, fine-structure, TAI, etc. here and elaborate in concluding discussion].
+
+Besides performing numerical computer experiments on the transport properties of our model system (see Figs....) based on the software package Kwant, we verify that a topological invariant defined in the mobility gap characterized by a finite localization length of bulk states indeed fully confirms our predictions regarding the quantization of Hall conductance. A careful analysis of the spectral localizer gap structure in the considered system provides further complementary evidence corroborating our results.  
+
+
+
+
+
+
+
+{\it Minimal two-banded lattice model ---}
+We exemplify our findings by introducing a minimal lattice model of the form 
+\begin{align}
+\hat H = \hat H_0 + \hat W,
+\end{align}
+where $\hat H_0$ is a free translation-invariant two-band Hamiltonian and $\hat W = W\sum_{j_x, j_y} \sum_{\alpha = a,b} f_{\bm j, \alpha} c_{\bm j, \alpha}^\dagger c_{\bm j, \alpha}$ is the disorder potential with overall strength $W \ge 0$ and random amplitudes $f_{\bm j, \alpha}$ drawn independently from the uniform distribution on the interval $[-1,1]$. In reciprocal space, the translation-invariant part is fully specified by the Bloch Hamiltonian $h_0(\bm k ) = \bm d(\bm k) \cdot \bm \sigma$, with $\bm \sigma$ the vector of Pauli matrices and $d_x(\bm k) = \gamma \sin(k_x)$, $d_y(\bm k) = \lambda(k_x) \sin(k_y)$, $d_z(\bm k) = \gamma_2[r - \cos(2 k_x)] - \lambda(k_x) \cos(k_y)$, and $\lambda(k_x) =  \epsilon_1 + \epsilon_2 (1 - \cos(k_x))/2 $, which translates into a tight-binding model with next-nearest-neighbor and diagonal hoppings \cite{Supplemental}. 
+
+In the following, we will use the parameters $r = 1.5$, $\epsilon_1 = 0.3$, $\epsilon_2 = 2$, $\gamma  =2$, and $\gamma_2 = 0.3$, for which both bands have Chern number zero. However, while total band is topologically trivial, it still contains a non-trivial structure in the form of an accumulation of topological charge at lower energies that is compensated by the opposite charge situated at high energies. This is visualized in the colorcode of Fig.~\ref{fig:one}a representing the accumulated Berry flux $\Omega(E_\mathrm{F}) = \frac{1}{2 \pi} \int_{E_{\bm k} < E_\mathrm{F}} \mathcal F \mathrm{d} k_x \mathrm{d} k_y$ up to the Fermi energy $E_\mathrm{F}$, which can be interpreted as the Hall conductance of the clean system for given $E_\mathrm{F}$. This quantity is also shown as a line plot in Fig.~\ref{fig:one}a, where a plateau is clearly visible as a consequence of the aforementioned topological charge separation. 
+
+Since there is no spectral or mobility gap in the energy window of the clean Hall plateaus, it is not surprising that their value is not quantized. Now, the theory of Anderson localization tells us that even arbitrarily small random disorder should localize (almost) all states and introduce a mobility gap, which in turn must force the Hall conductance to take a quantized value. For very small disorder potential, it seems natural that it jumps to the closest possible integer value, which is also retained as the disorder strength is increased further. Saliently, numerical transport simulations on our model provide strong numerical evidence of this mechanism, as we see from the red line that shows the result in the presence of disorder. \BM{I will read \cite{field_theory_disordered_CI} in detail and discuss it, I think it might provide pretty solid field-theory back-up of our findings.}
+
+{\it Transport properties. --} 
+In principle, all relevant information can already be extracted from a basic two-terminal scattering calculation conducted with KWANT. For this, we consider a square sample of $N_x = 600$, $N_y = 150$ sites and attach a leads with a width of $50$ sites to the center of each vertical face to measure transport in $x$ direction. The dispersion of the leads is set to $t_\mathrm{L} [\cos(k_x)  + \cos(k_y)] \sigma_0$ with $t_\mathrm{L} = 10$. In Fig.~\ref{Fig:Transport}a, the resulting conductance for \gls{obc} is shown as a contour plot over disorder strength $W$ and Fermi energy $E_\mathrm{F}$. There is an extended region where the conductance is quantized to one, indicating a topologically protected edge state. To demonstrate that the conductance quantum is indeed carried by an edge state, we close the boundary along $x$-direction in Fig.~\ref{Fig:Transport}b, which causes the system to become insulating in the same energy window. 
+
+Fig.~\ref{Fig:Transport}b also provides a complementary view to the non-quantized conductance plateau of the clean system that is nudged into an \gls{iqh} phase through the disorder potential, in the form of flow and annihilation of topological charge discussed in other works (see e.g. \cite{Fulga_Bergholtz} and some others). The topological charges at the bottom of the bands flow together and annihilate and the topological charges at the top as well, thereby enclosing an \gls{iqh} region in the phase diagram.
+
+As a side note. the region of quantized conductance appears to end at $W \approx 1$, which is simply a finite-size effect caused by the average localization length of states approaching the size of the system. For all generated data sets, we observed the quantized region extending further towards the $W = 0$ axis with increasing system size and we expect the \gls{iqh} phase to emerge for arbitrarily small $W$ given a large enough system.
+
+
+\begin{figure}[htp!]	 
+{\includegraphics[trim={0.75cm 0cm 0.75cm 0.cm}, width=0.95\linewidth]{Fig_2_publication.png}}
+\caption{a) Two-terminal conductance for parameters $r = 1.5$, $\epsilon_1 = 0.3$, $\epsilon_2 = 2$, $\gamma  =2$, and $\gamma_2 = 0.3$ and a system geometry of $N_x = 600$, $N_y = 150$ sites with \gls{obc}. Transport occurs in $x$-direction. (b) Two-terminal conductance for the same parameters as in a), but with \gls{pbc}. S-Matrix winding number as per \eq{Eqn:W_num} is indicated at the blue points. \BM{For the release plot, the invariant will be evaluated over multiple disorder instances and the precise mean value and standarad deviation will be mentioned in the figure caption or directly in the figure if it's not too busy.}}\label{Fig:Transport}
+\end{figure}
+We complement this data by a calculation of the transverse conductance $\sigma_{xy}$ through the Kubo-Bastin formula for linear response conductivity 
+
+\begin{align}
+\sigma_{xy}(E_\mathrm{F}, T) =& \frac{1}{V} \int_{-\infty}^\infty \mathrm{d} E f(E_\mathrm{F} - E, T) \left[{J}_x \rho(E) {J}_y \frac{\mathrm{d} G^+}{\mathrm{d} E} \right. \nonumber \\
+& - \left. J_x \frac{\mathrm{d} G^-}{\mathrm{d} E} { J}_y  \rho(E)  \right].\label{Eqn:Kubo_Bastin}
+\end{align}
+Here, $f(E_\mathrm{F} - E, T)$ is the Fermi distribution at temperature $T$, ${J}_\alpha$ denotes the current operator along the respective direction and $\rho(E) = \delta(E - H)$ the \gls{dos}, and $G^{\pm} = [E \pm i 0^+ - H]^{-1}$ the retarded/adavanced \gls{gf}, respectively. The \gls{dos} and \gls{gf} can be approximated by an expansion in Chebyshev polynomials to order $n_\mathrm{m}$, with the expansion coefficients determined from a Monte-Carlo evaluation of the trace using $R$ random phase vectors. Together with the number of disorder iterations $S$, these are the parameters that control the accuracy of the approximation to \eq{Eqn:Kubo_Bastin} \BM{I will provide more details on this method, either here or in the appendix.}.
+
+Fig.~\ref{Fig:Hall_cond} shows the result for $T = 0$, which is not perfectly quantized as this would require more moments than our numerical capacities permit, but the evolution of the \gls{iqh} region in the phase diagram is still clearly visible. Importantly, it agrees with Fig.~\ref{Fig:Transport}a
+
+\begin{figure}[htp!]	 
+{\includegraphics[trim={0.75cm 0cm 0.75cm 0.cm}, width=0.95\linewidth]{Fig_3_publication.png}}
+\caption{Hall conductance as a function for parameters $r = 1.5$, $\epsilon_1 = 0.3$, $\epsilon_2 = 2$, $\gamma  =2$, and $\gamma_2 = 0.3$ and a system geometry of $N_x = 100$, $N_y = 50$ with \gls{pbc} obtained from the Chebyshev expansion of the Kubo-Bastin formula with $n_\mathrm{m} = 500$, $R = 50$, and $S = 10$. \BM{This is very a low accuracy calculation, serves just as a place holder.}}\label{Fig:Hall_cond}
+\end{figure}
+
+\JCB{
+Fig. 2 and 3.
+}
+
+{\it Topology of conductance quantization. --} 
+As long as the Fermi energy lies inside a mobility gap, for which zero transmission amplitude is a sufficient condition here, the reflection part $R$ of the S-matrix is unitary. Upon introducing twisted boundary conditions perpendicular to the direction of transport with an angle $\phi$, the associated winding number 
+
+\begin{align}
+\nu = \frac{1}{2\pi} \int_{0}^{2 \pi} \frac{\mathrm{d}}{\mathrm{d}\phi} \mathrm{arg}[\mathrm{det}[R(\phi, E)]] \mathrm{d} \phi \label{Eqn:W_num}
+\end{align}
+of the reflection matrix counts the charge pumped between the cylinder edges for a full twist of the boundary phase \cite{Scattering_invariants}. We calculate the invariant at multiple points in the phase diagram and indicate the result in Fig.~\ref{Fig:Transport}b, which further confirms the nature of the \gls{iqh} phase. 
+
+Finally, we turn to the spectral localizer, which is defined as the following Hermitian matrix
+\begin{align}
+\mathcal L(x,y E) =&  \sigma_z \otimes (H - E) + \kappa \sigma_x \otimes (X - x) \nonumber \\
+&+ \kappa \sigma_y \otimes (Y - y)
+\end{align}
+for a system in two spatial dimensions and symmetry class A. Here, $X$ and $Y$ denote the position operator for the respective coordinates, $x$, $y$ are real numbers representing a position in real space, and the parameter $\kappa$ plays the role of balancing the weight of $H$ and the position operators \cite{Spec_loc_1, Spec_loc_2, Spec_loc_3, Spec_loc_4}. The relevant quantity is the bulk localizer gap
+\begin{align}
+g_{\mathcal L}(E) = \text{min}_{x,y \in \text{bulk}} \left| \text{spec}[\mathcal L(x,y, E)]\right|, \label{Eqn:loc_gap}
+\end{align}
+where $\text{spec}[...]$ denotes the set of all eigenvalues. For an energy $E$ situated in a spectral gap of $H$, a finite localizer gap $g_{\mathcal L}(E)$ can be proven to exist for suitably chosen $\kappa$. In the presence of a bulk localizer gap, the index 
+\begin{align}
+Q(x,y, E) = \frac{1}{2} \text{sig}[\mathcal L(x,y, E)], \label{Eqn:loc_index}
+\end{align}
+where the signature $\text{sig}[\mathcal L(x,y, E)]$ denotes the difference in the number of positive and negative eigenvalues, is well-defined and constant for $x,y \in \text{bulk}$. $Q$ measures the number of chiral edge states surrounding the system at this energy \cite{Spec_loc_1, Spec_loc_2, Spec_loc_3, Spec_loc_4} and will change to zero if $(x,y)$ is moved beyond the boundaries of the system, which must be accompanied by a gap closing of $\mathcal L(x,y, E)$ along the way.
+
+It has been noted that $g_{\mathcal L}(E)$ can remain finite even if there is no spectral or mobility gap at $E$, which is still a subject of active mathematical research \cite{Fulga_Bergholtz, Spec_loc_4}. In the present case, we find that for a choice of $\kappa \approx 0.25$, a localizer gap opens deep inside the bulk band, which is accompanied by a non-trivial index $Q = 1$. We present the following argument why this indicates the formation of a stable \gls{iqh} phase in the presence of a random potential: at small enough disorder strength, such that all eigenvalues of $\hat W$ are smaller than $\leq g_{\mathcal L}(E)$, the localizer gap cannot close by virtue of Weyl's inequality \cite{Fulga_Bergholtz, Spec_loc_5}, see supplemental material for details. However, for a sufficiently large system, any strength of disorder should suffice to cause a mobility gap via Anderson localization, for which the localizer gap and index become meaningful \cite{spec_loc_mobility_gap} and predict a chiral edge state surrounding the system.
+
+
+\BM{we should introduce the spectral localizer briefly, on the level of detail in \cite{Fulga_Bergholtz} or less. Then, argue with Weyl's inequality that very small disorder cannot close the gap and change the localizer index, but should induce a mobility gap, thus giving rise to the observed \gls{iqh} phase.}
+
+
+\begin{figure}[htp!]	 
+{\includegraphics[trim={0.75cm 0cm 0.75cm 0.cm}, width=0.95\linewidth]{Fig_4_publication.png}}
+\caption{a) Localizer gap $g_{\mathcal L}(E)$ (cf. \eq{Eqn:loc_gap}) for parameters $r = 1.5$, $\epsilon_1 = 0.3$, $\epsilon_2 = 2$, $\gamma  =2$, and $\gamma_2 = 0.3$ and a system size of $N_x = 25$, $N_y = 25$. The scaling parameter is set to $\kappa = 0.25$. The value is taken as the minimum of 25 reference positions inside the central Wigner-Seitz cell. The read bars indicate the clean bulk spectrum. b) Associated Localizer index $Q$ (cf. \eq{Eqn:loc_index}), taken as the average over the 25 positions. We checked that all results are converged with respect to system size. \BM{Only preliminary plot...} }\label{Fig:spec_loc}
+\end{figure}
+
+\JCB{
+Winding number refers to Fig. 2 again. Spectral localizer is discussed and refers to SOM for more data (if more data necessary).
+}
+
+{\it Concluding Discussion. ---} 
+\JCB{
+Detail relation to work mentioned in introduction. Present outlook.
+}
+
+\begin{itemize}
+
+
+\item Stability is guaranteed beyond topological band structures (i.e. in the presence of disorder) as long as the Fermi energy lies in a gap or mobility gap (Many body chern number, TQFT, K-Theory)
+
+
+
+\item Here, we demonstrate a new phenomenon, where disorder opens a mobility gap deep in the bulk of a trivial band that is populated by an \gls{iqh} phase. By contrast to the two scenarios mentioned before, this is not a disorder-driven phase transition in the spirit of Ref \cite{TAI_1, TAI_2} that can be understood on the level of a renormalized band structure. Instead, there is an energy window inside a trivial band that is populated by an uncompensated edge state but also trivial bulk modes. Adding disorder localizes the bulk modes and drives the system into a stable topological phase. In that sense, an arbitrarily small amount of disorder is sufficient. \BM{We should really try to distinguish this well from the phenomenology of the TAI or else the originality may be lost to the referees...}
+\end{itemize}
+\acknowledgments
+{\it Acknowledgments.---}
+We would like to thank Ion Cosma Fulga and Emil J. Bergholtz for discussions. We acknowledge financial support from the German Research Foundation (DFG) through the Collaborative Research Centre SFB 1143, the Cluster of Excellence ct.qmat, and the DFG Project 419241108. Our numerical calculations were performed on resources at the TU Dresden Center for Information Services and High Performance Computing (ZIH).
+
+\begin{thebibliography}{10}
+\bibitem{Fulga_Bergholtz}
+H. Liu, C. Fulga, E. J. Bergholtz, J. Asboth, {\em Topological fine structure of an energy band}, \href{https://arxiv.org/abs/2312.08436}{arXiv:2312.08436 (2023)}.
+
+\bibitem{theory_TA}
+C. W. Groth, M. Wimmer, A. R. Akhmerov, J. Tworzydło1,2, and C. W. J. Beenakker, {\em Theory of the Topological Anderson Insulator}, \href{https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.103.196805}{Phys. Rev. Lett. {\bfseries 103}, 196805 (2009)}.
+
+\bibitem{Scattering_invariants}
+I. C. Fulga, F. Hassler, and A. R. Akhmerov, {\em Scattering theory of topological insulators and superconductors}, \href{https://journals.aps.org/prb/abstract/10.1103/PhysRevB.85.165409}{Phys. Rev. B {\bfseries 85}, 165409 (2012)}.
+
+\bibitem{field_theory_disordered_CI}
+M. Moreno-Gonzalez, J. Dieplinger, and A. Altland, {\em Topological quantum criticality of the disordered Chern insulator}, \href{https://www.sciencedirect.com/science/article/pii/S000349162300043X?}{Annals of Physics {\bfseries 456}, 169258 (2023)}.
+
+\bibitem{Spec_loc_1}
+T. A. Loring, {\em $K$-theory and pseudospectra for topological insulators}, \href{https://www.sciencedirect.com/science/article/abs/pii/S0003491615000901}{Annals of Physics {\bfseries 356}, 383–416 (2015)}
+
+\bibitem{Spec_loc_2}
+T. Loring and H. Schulz-Baldes, {\em Finite volume calculation of K-theory invariants}, \href{https://arxiv.org/abs/1701.07455}{arXiv:1701.07455 (2017)}.
+
+\bibitem{Spec_loc_3}
+T. Loring and H. Schulz-Baldes, {\em The spectral localizer for even index pairings}, \href{https://arxiv.org/abs/1802.04517}{arXiv:1802.04517 (2018)}.
+
+\bibitem{Spec_loc_4}
+A. Cerjan and T. A. Loring, {\em Local invariants identify topology in metals and gapless systems}, \href{https://journals.aps.org/prb/abstract/10.1103/PhysRevB.106.064109}{Phys. Rev. B {\bfseries 106}, 064109 (2022)}
+
+\bibitem{Spec_loc_5}
+A. Cerjan and T. A. Loring, {\em Tutorial: Classifying Photonic Topology Using the Spectral Localizer and Numerical $K$-Theory}, \href{https://pubs.aip.org/aip/app/article/9/11/111102/3322376/Classifying-photonic-topology-using-the-spectral}{APL Photonics {\bfseries 9}, 111102 (2024)}
+
+\bibitem{spec_loc_mobility_gap}
+T. Stoiber, {\em A spectral localizer approach to strong topological invariants in the mobility gap regime}, \href{https://arxiv.org/abs/2410.22214}{ arXiv:2410.22214 (2024)}.
+
+\end{thebibliography}
+
+
+
+
+\appendix
+
+\onecolumngrid
+\section{Supplementary Material for ``Quantized Hall Conductance from Trivial Chern Bands'' }
+\subsection{More data from the Kubo formula} 
+
+\subsection{Kernel Polynomial Approach to the Kubo Bastin formula} 
+In the interest of a self-contained presentation, we briefly review the Kernel polynomial approach to the computing the Kubo-Bastin formula that is implemented in the KWANT package, for more details see, e.g., Refs.~\cite{Kubo_bastin_KPM_1, Kubo_bastin_KPM_2, KPM_Review}. The exact linear response expression for the conductance tensor in a non-interacting system can be derived from the Kubo formula as 
+\begin{align}
+\sigma_{xy}(E_\mathrm{F}, T) =& \frac{1}{V} \int_{-\infty}^\infty \mathrm{d} E f(E_\mathrm{F} - E, T) \left[{J}_x \rho(E) {J}_y \frac{\mathrm{d} G^+}{\mathrm{d} E}  -  J_x \frac{\mathrm{d} G^-}{\mathrm{d} E} { J}_y  \rho(E)  \right].\label{Eqn_App:Kubo_Bastin}
+\end{align}
+where $f(E_\mathrm{F} - E, T) = 1 / (\exp[(E-E_F) / T] + 1)$, in units where $k_\mathrm{B} = \hbar = 1$ \cite{Kubo_Bastin, Kubo_Bastin_modern}. Given the position operators $X$ and $Y$, the velocity operators follow from the Heisenberg picture as $v_x = \dot X = -i [X, H]$, $v_y = \dot Y = -i [Y, H]$, which yield the current operators appearing in \eq{Eqn_App:Kubo_Bastin} as $J_\alpha = -e v_\alpha / V$. The non-trivial aspect lies in obtaining the operator-valued functions $\rho(E) = \delta(E - H)$ and $G^{\pm} = [E \pm i 0^+ - H]^{-1}$, for which an expansion in Chebyshev polynomials of the first kind comes in useful.
+
+\subsubsection{Chebyshev polynomial expansion}
+The Chebyshev polynomials of the first kind are defined as
+\begin{align}
+T_m(x) = \arccos[m \cos(x)]
+\end{align}
+on the interval $[-1, 1]$ and obey the orthogonality relation
+\begin{align}
+\langle T_n , T_m \rangle_w = \frac{1 + \delta_{n,0}}{2} \delta_{n,m}
+\end{align}
+with respect to the scalar product defined by the weighting function $w(x) = [\pi \sqrt{1-x^2}]^{-1}$
+\begin{align}
+\langle f , g \rangle_w = \int_{-1}^1 f(x) g(x) w(x).
+\end{align}
+For sufficiently regular functions on $[-1,1]$, an expansion in $T_n$ should converge uniformly and read
+\begin{align}
+f(x) = 2 w(x) \sum_{n = 0}^\infty \frac{\mu_n T_n(x)}{\delta_{n,0} + 1}
+\end{align}
+with coefficients
+\begin{align}
+\mu_n = \int_{-1}^1 f(x) T_n(x).
+\end{align}
+To obtain an approximation to $f(x)$, this expansion can be truncated at some order $M$
+\begin{align}
+f_M(x) = w(x)\sum_{n = 0}^{M-1} \mu_n T_n(x),
+\end{align}
+however naively doing so will usually lead to so-called Gibbs oscillations. To obtain a better approximation, it is possible to fold the truncated function with a Kernel
+\begin{align}
+f_{\text{KPM},M}(x) = \int_{-1}^1 \pi \sqrt{1 - y^2} f_M(y) K_M(x, y) dy,
+\end{align} 
+where the Kernel $K_M(x, y)$ depends on the order $M$ of the approximation and can be chosen such that $f_{\text{KPM},M}(x)$ converges to $f(x)$ faster than the raw truncation $f_M(x)$. In practice, this amounts to multiplying the expansion coefficients by factors $g_n(M)$ that depend on the order M of the approximation:
+\begin{align}
+f_{\text{KPM},M}(x) = 2 w(x) \sum_{n = 0}^{M-1} g_n(M) \frac{\mu_n T_n(x)}{\delta_{n,0} + 1}.
+\end{align} 
+
+The optimal choice of Kernel depends on the nature of the problem at hand and which properties of the approximated functions should be preserved to obtain an accurate solution. The calculations in this paper employ the Jackson Kernel, which is well-suited for most physics applications and amounts to the choice
+\begin{align}
+g_n = \frac{(M-n+1) \cos[\pi n / (M+1)] + \sin[\pi n / (M+1)] \cot[\pi / (M+1)]}{M+1}.
+\end{align} 
+
+\subsubsection{Expansion of the Kubo-Bastin formula}
+To expand the \gls{dos}, we assume that the Hamiltonian has been rescaled by a prefactor such that the complete spectrum is contained within $[-1,1]$. Then
+\begin{align}
+\delta(E - H) = \sum_{l = 1}^D \delta(E - E_l) \ket{E_l}\bra{E_l}
+\end{align} 
+
+
+\subsection{Edge states in Cylinder geometry}
+The edge spectrum along $x$ direction obtained from  the diagonalization on a cylinder with \gls{pbc} along $y$ direction reveals two sets of counterpropagating edge states. Importantly, there is an energy window where the second edge state has no anti-chiral partner. \BM{We should be a bit careful with the claims about the edge states. They are only visible for certain cuts through the spectrum and the Hall conductance is also quantized when there is a partner for the edge state at every energy. The important part appears to be the energetic separation of topological charge.}
+
+\twocolumngrid
+
+
+
+\begin{thebibliography}{10}
+\bibitem[S1]{Kubo_bastin_KPM}
+J. H. Garcia, L.  Covaci, T. G. Rappoport, {\em Real-space calculation of the conductivity tensor for disordered topological matter}, \href{https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.114.116602}{Phys. Rev. Lett. {\bfseries 114}, 116602 (2015)}.
+
+\bibitem[S2]{Kubo_Bastin_KPM_2}
+D. Ködderitzsch, K. Chadova, and H. Ebert, {\em Linear response Kubo-Bastin formalism with application to the anomalous and spin Hall effects: A first-principles approach}, \href{https://journals.aps.org/prb/abstract/10.1103/PhysRevB.92.184415}{Phys. Rev. B {\bfseries 92}, 184415 (2015)}.
+
+\bibitem[S3]{KPM_Review}
+A. Weisse, G. Wellein, A. Alvermann, H. Fehske, {\em The Kernel Polynomial Method}, \href{https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.78.275}{Rev. Mod. Phys. {\bfseries 78}, 275 (2006)}.
+
+\bibitem[S4]{Kubo_Bastin}
+A. Bastin, C. Lewinner, O. Betbeder-Matibet, and P.
+Nozieres, {\em Quantum oscillations of the hall effect of a fermion gas with random impurity scattering}, \href{https://journals.aps.org/prb/abstract/10.1103/PhysRevB.64.014416}{ J. Phys. Chem. Solids {\bfseries 32}, 1811 (1971)}.
+
+\bibitem[S5]{Kubo_Bastin_modern}
+A. Cr\'epieux and P. Bruno, {\em Theory of the anomalous Hall effect from the Kubo formula and the Dirac equation}, \href{https://journals.aps.org/prb/abstract/10.1103/PhysRevB.64.014416}{Phys. Rev. B {\bfseries 64}, 014416 (2001)}.
+
+
+
+\end{thebibliography}
+
+\end{document}
