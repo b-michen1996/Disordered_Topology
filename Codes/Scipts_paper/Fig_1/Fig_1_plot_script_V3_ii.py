@@ -1,5 +1,6 @@
 import csv
 import numpy as np
+import matplotlib as mpl
 
 from matplotlib import pyplot as plt
 import matplotlib.colors as colors
@@ -23,11 +24,28 @@ sigma_y = np.array([[0, -1j],[1j, 0]])
 sigma_z = np.array([[1, 0],[0, -1]])
 		
 
-def Fig_1_V3(N, N_colorsteps, r, epsilon_1, epsilon_2, gamma, gamma_2, data_location):
+def gen_dictionary(path):
+	"""Generate dictionary with parameters from file."""
+	parameters = {}
+	
+	with open(path) as f:        
+		for line in f:            
+			current_line = line.split()            
+			try: 
+				parameters[current_line[0]] = np.array(current_line[1:], dtype = float)
+			except:
+				try: 
+					parameters[current_line[0]] = np.array(current_line[1:], dtype = str)                
+				except:
+					pass
+	return parameters
+
+
+def Fig_1_V3_ii(N, N_colorsteps, r, epsilon_1, epsilon_2, gamma, gamma_2, gamma_3, data_location, data_location_inset):
 	"""Plot energy of all bands over k_x with a color-code representing the integral
 	of the Berry curvature up to the given energy. """
 	print("Startting sigma_xy calculation")
-	I_low, I_up, E_low, E_up, energies_band_low, energies_band_up  = Berry_codes.sigma_xy_V3_analytically(N, r, epsilon_1, epsilon_2, gamma, gamma_2, gamma_3 = 0)
+	I_low, I_up, E_low, E_up, energies_band_low, energies_band_up  = Berry_codes.sigma_xy_V3_analytically(N, r, epsilon_1, epsilon_2, gamma, gamma_2, gamma_3)
 	
 	# get lower and upper bounds for bulk spectrum along kx in both bands
 	energy_bounds = np.zeros((N, 2, 2))
@@ -49,6 +67,7 @@ def Fig_1_V3(N, N_colorsteps, r, epsilon_1, epsilon_2, gamma, gamma_2, data_loca
 	E_max_up = np.max(E_up)
 	
 	label_size = 25
+	label_scale_inset = 0.75
 	
 	fig, axs = plt.subplots(1, 2, figsize =(12, 6))
 	fig.subplots_adjust(wspace=0.1)
@@ -78,18 +97,20 @@ def Fig_1_V3(N, N_colorsteps, r, epsilon_1, epsilon_2, gamma, gamma_2, data_loca
 			   aspect='auto',
 			   origin='lower',
 			   extent=[-np.pi, np.pi, E_min_low, E_max_low],
-			   vmin = 0,
-			   vmax = 1,
-			   cmap=plt.cm.magma
+			   vmin = 0, vmax = 2,
+			   #norm=colors.PowerNorm(gamma=2, vmin = 0, vmax = 1),
+			   #norm=colors.Normalize(vmin=0., vmax=2),
+			   cmap=plt.cm.magma_r
 			  )
 	
 	im_up = a1.imshow(color_data_up,
 			   aspect='auto',
 			   origin='lower',
 			   extent=[-np.pi, np.pi, E_min_up, E_max_up],
-			   vmin = 0,
-			   vmax = 1,
-			   cmap=plt.cm.magma
+			   vmin = 0, vmax = 2,
+			   #norm=colors.PowerNorm(gamma=2, vmin = 0, vmax = 1),
+			   #norm=colors.Normalize(vmin=0., vmax=2),
+			   cmap=plt.cm.magma_r
 			  )
 	
 	# clip by band boundaries
@@ -105,26 +126,60 @@ def Fig_1_V3(N, N_colorsteps, r, epsilon_1, epsilon_2, gamma, gamma_2, data_loca
 	a1.add_artist(patch_up)
 	im_up.set_clip_path(patch_up)
 
-	cbar_title = r"$\sigma_{xy}[e^2/\hbar]$"
-	cbar = plt.colorbar(im_low, location='left', shrink=0.6, ticks=[0, 0.5, 1])
+	cbar_title = r"$\sigma_{xy}[e^2/h]$"
+	#cbar = plt.colorbar(im_low, location='left', shrink=0.6, ticks=[0, 0.5, 1], norm=colors.Normalize(vmin=0., vmax=1))
+	cbar = fig.colorbar(im_low, location='left', shrink=0.6, ticks=[0, 0.5, 1])
 	cbar.ax.tick_params(labelsize=label_size) 
 	cbar.ax.set_title(cbar_title, fontsize = label_size, pad = 25) 
+		
+	a2.axvline(x=1, color='black', linestyle='--')
 	
-	# plot clean and dirty sigma_xy
-	final_integral_lower, final_integral_upper, final_energies_lower, final_energies_upper, energies_band_low = Berry_codes.sigma_xy_analytically(N, epsilon_1, epsilon_2, gamma, gamma_2)
-	
-	plt.axvline(x=1, color='black', linestyle='--')
-	
-	a2.plot(final_integral_lower, final_energies_lower, color = "b", label = r"$W = 0$")
-	a2.plot(final_integral_upper, final_energies_upper, color = "b")
+	a2.plot(I_low, E_low, color = "black", label = r"$W = 0$")
+	a2.plot(I_up, E_up, color = "black")
 	
 	# add numerical data
-	n_vals = 5
+	n_vals = 7
 	E_vals_data = np.genfromtxt(data_location + "/E_vals.txt", dtype= float, delimiter=' ') 
 	data_sigma_xy = np.genfromtxt(data_location + "/result_sigma_xy.txt", dtype= float, delimiter=' ') 
+	#data_sigma_yx = np.genfromtxt(data_location + "/result_sigma_yx.txt", dtype= float, delimiter=' ') 
+	#data_mean = 0.5 * (data_sigma_xy + data_sigma_yx)
 	data_sigma_xy_mean = np.mean(data_sigma_xy[:, :n_vals], axis = 1)
+	data_sigma_xy_std = np.std(data_sigma_xy[:, :n_vals], axis = 1)
 	
-	a2.plot(data_sigma_xy_mean, E_vals_data, color = "r", label = r"$W = 1$")
+	a2.plot(data_sigma_xy_mean, E_vals_data, color = "r", label = r"$W = 1.5$")
+	
+	# indicate standard deviation
+	E_l_plateu_1 = -2
+	E_r_plateu_1 = -0.7
+	E_l_plateu_2 = 1
+	E_r_plateu_2 = 2
+	
+	mask_plateau_1 = (E_vals_data > E_l_plateu_1) &  (E_vals_data < E_r_plateu_1)
+	mask_plateau_2 = (E_vals_data > E_l_plateu_2) &  (E_vals_data < E_r_plateu_2)
+
+	a2.fill_betweenx(E_vals_data[mask_plateau_1], data_sigma_xy_mean[mask_plateau_1] - data_sigma_xy_std[mask_plateau_1], data_sigma_xy_mean[mask_plateau_1] + data_sigma_xy_std[mask_plateau_1], facecolor = "gray", lw = 0)
+	a2.fill_betweenx(E_vals_data[mask_plateau_2], data_sigma_xy_mean[mask_plateau_2] - data_sigma_xy_std[mask_plateau_2], data_sigma_xy_mean[mask_plateau_2] + data_sigma_xy_std[mask_plateau_2], facecolor = "gray", lw = 0)
+	
+	# add inset
+	n_vals_inset = 4
+	x_data_inset = np.genfromtxt(data_location_inset + "/Nx_vals.txt", dtype= float, delimiter=' ') 
+	data_inset = np.genfromtxt(data_location_inset + "/result_sigma_xx.txt", dtype= float, delimiter=' ') 
+	data_inset_mean = np.mean(data_inset[:, :n_vals_inset], axis = 1)
+	data_inset_std = np.std(data_inset[:, :n_vals_inset], axis = 1)
+
+	x_0 = 0.1
+	y_0 = 0.7
+	
+	inset_width = 0.4
+	inset_height = 0.15
+		
+	a2_inset = a2.inset_axes(
+	[x_0, y_0, inset_width, inset_height],
+	xlim=(400, 2000), ylim=(0.5, 1))
+	
+	a2_inset.fill_between(x_data_inset, data_inset_mean - data_inset_std, data_inset_mean + data_inset_std, facecolor = "gray", lw = 0)
+	a2_inset.plot(x_data_inset, data_inset_mean, color = "red")
+	a2_inset.axhline(y=1, color='black', linestyle='--')
 	
 	# set labels and fonts
 	
@@ -154,18 +209,35 @@ def Fig_1_V3(N, N_colorsteps, r, epsilon_1, epsilon_2, gamma, gamma_2, data_loca
 	#a2.yaxis.tick_right()
 	a2.yaxis.set_ticks_position('right')
 
-	
 	a2.set_xlabel(r"$\sigma_{xy}$", fontsize=label_size)	
 	a2.set_ylabel(r"$E_\mathrm{F}$", fontsize=label_size, rotation='horizontal')
 		
 	a2.xaxis.set_label_coords(0.75, -0.025)
 	a2.yaxis.set_label_coords(1.05, 0.75)
 	
-	a2.legend(loc="upper left", bbox_to_anchor=(0.,0.85), fontsize = label_size)
+	a2.legend(loc="upper left", bbox_to_anchor=(0., 0.4), fontsize = label_size)
 
+	a2_inset.set_xlabel(r"$N_{x}$", fontsize = label_scale_inset * label_size)    
+	a2_inset.set_ylabel(r"$\sigma_{xy}$", fontsize = label_scale_inset * label_size, rotation='horizontal')
+	a2_inset.xaxis.set_label_coords(1.16, -0.14)
+	a2_inset.yaxis.set_label_coords(-0.13, 1.17)
+
+	#a2_inset.set_xlabel(r"$N_{x}$", fontsize = label_scale_inset * label_size)	
+	#a2_inset.set_ylabel(r"$\sigma_{xy}$", fontsize = label_scale_inset * label_size, rotation='horizontal')
+	#a2_inset.xaxis.set_label_coords(0.75, -0.1)
+	#a2_inset.yaxis.set_label_coords(-0.1, 0.55)
+
+	a2_inset.tick_params(direction='out', length=4, width=2,  labelsize = label_scale_inset * label_size, pad = 5)
+	a2_inset.set_xticks([500, 1000, 1500, 2000, 2500, 3000])
+	#a2_inset.set_xticklabels(["", r"$1$", "", r"$2$","", r"$3$"])
+	a2_inset.set_xticklabels(["", r"$1\mathrm{e}3$", "", r"$2\mathrm{e}3$", "", r"$3\mathrm{e}3$"])
+	
+	a2_inset.set_yticks([0.5, 1, 1.5])
+	a2_inset.set_yticklabels([r"$0.5$", r"$1$", r"$1.5$"])
 	
 	a1.text(0.5,0.94, r"a)", fontsize = label_size, transform=a1.transAxes)
 	a2.text(0.5, 0.94, r"b)", fontsize = label_size, transform=a2.transAxes)
+	a2_inset.text(0.2, 0.7, r"$E_\mathrm{F} = 1.2$", fontsize = label_scale_inset * label_size, transform=a2_inset.transAxes)
 
 	fig.tight_layout()
 	fig.savefig("Fig_1_publication.png",  bbox_inches='tight')
@@ -175,19 +247,21 @@ def Fig_1_V3(N, N_colorsteps, r, epsilon_1, epsilon_2, gamma, gamma_2, data_loca
 
 def main():
 
-	N = 100
+	N = 200
 	N_colorsteps = 100
 	
-	r = 1.5
-	epsilon_1 = 0.3
+	r = 0
+	epsilon_1 = 0.4
 	epsilon_2 = 2
 
 	gamma = 2
-	gamma_2 = 0.3
+	gamma_2 = 0
+	gamma_3 = 0.15
 
-	data_location = "Kubo_final_DC_CI_V3_line_results/Kubo_final_DC_CI_V3_line_run_6"
+	data_location = "G_final_V3_Hall_line_run_20"
+	data_location_inset = "G_final_V3_Hall_size_scaling_run_25"
 	
-	Fig_1_V3(N, N_colorsteps, r, epsilon_1, epsilon_2, gamma, gamma_2, data_location)
+	Fig_1_V3_ii(N, N_colorsteps, r, epsilon_1, epsilon_2, gamma, gamma_2, gamma_3, data_location, data_location_inset)
 
 	
 	

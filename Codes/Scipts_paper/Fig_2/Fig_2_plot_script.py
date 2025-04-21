@@ -116,7 +116,7 @@ def Fig_2(location_a, location_b, location_data_inset_a, location_data_inset_b):
     x_data_inset_a = np.genfromtxt(location_data_inset_b + "/Nx_vals.txt", dtype= float, delimiter=' ') 
     data_inset_a = np.genfromtxt(location_data_inset_a + "/result.txt", dtype= float, delimiter=' ') 
     
-    #data_inset_a = data_inset_a[:, :7]
+    data_inset_a = data_inset_a[:, :2]
     
     data_inset_a_mean = np.mean(data_inset_a, axis = 1)
     data_inset_a_std = np.std(data_inset_a, axis = 1)
@@ -124,7 +124,7 @@ def Fig_2(location_a, location_b, location_data_inset_a, location_data_inset_b):
     x_data_inset_b = np.genfromtxt(location_data_inset_b + "/Nx_vals.txt", dtype= float, delimiter=' ') 
     data_inset_b = np.genfromtxt(location_data_inset_b + "/result.txt", dtype= float, delimiter=' ') 
     
-    #data_inset_b = data_inset_b[:, :7]
+    data_inset_b = data_inset_b[:, :2]
     
     data_inset_b_mean = np.mean(data_inset_b, axis = 1)
     data_inset_b_std = np.std(data_inset_b, axis = 1)

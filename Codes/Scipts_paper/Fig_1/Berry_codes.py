@@ -138,7 +138,7 @@ def Berry_curvature_analytically(N, epsilon_1, epsilon_2, gamma, gamma_2):
 
 	
 
-def Berry_curvature_analytically_V3(N, r, epsilon_1, epsilon_2, gamma, gamma_2):
+def Berry_curvature_analytically_V3(N, r, epsilon_1, epsilon_2, gamma, gamma_2, gamma_3 = 0.):
 	"""Calculate berry curvature of H_bloch and return it as an array along with k_x, k_y values suitable for contour plot."""
 	delta_k = 2 * np.pi / N 
 	k_vals = np.linspace(-np.pi + delta_k/2, np.pi + delta_k/2, N, endpoint= False)
@@ -147,7 +147,7 @@ def Berry_curvature_analytically_V3(N, r, epsilon_1, epsilon_2, gamma, gamma_2):
 
 	Phi_vals =  np.zeros((N,N))
 	
-	energies = np.zeros((N,N))
+	energies = np.zeros((N,N,2))
 	
 	# calculate Berry curvature
 	for jx in range(N):
@@ -155,9 +155,10 @@ def Berry_curvature_analytically_V3(N, r, epsilon_1, epsilon_2, gamma, gamma_2):
 			kx = kx_array[jy, jx]
 			ky = ky_array[jy, jx]
 			# calculate flux through plaquette
-			Omega, energy = Omega_func_V3(kx, ky, r, epsilon_1, epsilon_2, gamma, gamma_2, band = -1)
+			Omega, energy_m, energy_p = Omega_func_V3(kx, ky, r, epsilon_1, epsilon_2, gamma, gamma_2, band = -1, gamma_3 = gamma_3)
 			Phi_vals[jy, jx] = Omega
-			energies[jy, jx] = energy						
+			energies[jy, jx, 0] = energy_m
+			energies[jy, jx, 1] = energy_p
 		
 	# calculate chern number for each band
 	C_n = (2 * np.pi / (N ** 2)) * np.sum(Phi_vals) 
@@ -210,7 +211,7 @@ def Omega_func(kx, ky, epsilon_1, epsilon_2, gamma, gamma_2, band = -1):
 
 
 
-def Omega_func_V3(kx, ky, r, epsilon_1, epsilon_2, gamma, gamma_2, band = -1):
+def Omega_func_V3(kx, ky, r, epsilon_1, epsilon_2, gamma, gamma_2, band = -1, gamma_3 = 0):
 	"""calculate Berry curvature at kx, ky"""
 	s_x = np.sin(kx)
 	s_2x = np.sin(2 * kx)
@@ -220,15 +221,16 @@ def Omega_func_V3(kx, ky, r, epsilon_1, epsilon_2, gamma, gamma_2, band = -1):
 	c_y = np.cos(ky)	
 	lambda_kx = (epsilon_1 + epsilon_2 * (1 - c_x)/2)
 				
-	E = band * np.sqrt((gamma * s_x) ** 2 + (lambda_kx * s_y)**2 + (gamma_2 * (r - c_2x) - lambda_kx * c_y) ** 2)
+	E = np.sqrt((gamma * s_x) ** 2 + (lambda_kx * s_y)**2 + (gamma_2 * (r - c_2x) - lambda_kx * c_y) ** 2)
 	
 	res = lambda_kx * (epsilon_2 * gamma * s_x ** 2 / 2 + 2 * gamma * gamma_2 * s_x * s_2x * c_y 
 					+ gamma * gamma_2 * (r - c_2x) * c_x * c_y - gamma * lambda_kx * c_x)
 	
 	res = - band * res / (2 * (E ** 3))
 	
-	return -res, E
+	d0 = gamma_3 * np.cos(ky)
 	
+	return res, d0 - E, d0 + E
 
 def syst_final(Nx, Ny, epsilon_1, epsilon_2, gamma, gamma_2, PBC = 0., wrap_dir = "x"):
 	"""Creates system with the given parameters and then adds random impurities. The argument 
@@ -445,13 +447,17 @@ def sigma_xy_analytically(N, epsilon_1, epsilon_2, gamma, gamma_2):
 
 
 
-def sigma_xy_V3_analytically(N, r, epsilon_1, epsilon_2, gamma, gamma_2):
+def sigma_xy_V3_analytically(N, r, epsilon_1, epsilon_2, gamma, gamma_2, gamma_3 = 0):
 	"""Integral of Berry curvature up to Fermi energy, obtained from analytical Berry curvature discretized on N x N lattice."""
-	Omega_vals_lower_band, C_n, k_x_vals, k_y_vals, energies_lower_band = Berry_curvature_analytically_V3(N, r, epsilon_1, epsilon_2, gamma, gamma_2)
+	Omega_vals_lower_band, C_n, k_x_vals, k_y_vals, energies = Berry_curvature_analytically_V3(N, r, epsilon_1, epsilon_2, gamma, gamma_2, gamma_3)
 
-	print("Min / Max energies")
-	print(np.min(energies_lower_band))
-	print(np.max(energies_lower_band))
+	print("Min / Max energies lower band")
+	print(np.min(energies[:,:,0]))
+	print(np.max(energies[:,:,0]))
+	
+	print("Min / Max energies upper band")
+	print(np.min(energies[:,:,1]))
+	print(np.max(energies[:,:,1]))
 	
 	print ("Chern numbers ", C_n)	
 		
@@ -460,9 +466,9 @@ def sigma_xy_V3_analytically(N, r, epsilon_1, epsilon_2, gamma, gamma_2):
 	prefactor = 2 * np.pi / (N ** 2)
 	 
 	Integration_data_lower = prefactor * Omega_vals_lower_band.flatten()
-	energy_data_lower = energies_lower_band.flatten()
+	energy_data_lower = energies[:,:,0].flatten()
 	Integration_data_upper = - Integration_data_lower
-	energy_data_upper = - energy_data_lower
+	energy_data_upper = energies[:,:,1].flatten()
 	
 	# get index to sort by energy
 	idx_lower = np.argsort(energy_data_lower)
@@ -502,6 +508,6 @@ def sigma_xy_V3_analytically(N, r, epsilon_1, epsilon_2, gamma, gamma_2):
 			final_energies_upper.append(energy_data_upper[j])
 	
 		
-	return final_integral_lower, final_integral_upper, final_energies_lower, final_energies_upper, energies_lower_band
+	return final_integral_lower, final_integral_upper, final_energies_lower, final_energies_upper, energies[:,:,0], energies[:,:,1]
 
 	

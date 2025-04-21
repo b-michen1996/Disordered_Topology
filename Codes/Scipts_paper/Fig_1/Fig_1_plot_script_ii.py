@@ -128,8 +128,6 @@ def Fig_1_ii(N, N_colorsteps, epsilon_1, epsilon_2, gamma, gamma_2, data_locatio
 	cbar.ax.tick_params(labelsize=label_size) 
 	cbar.ax.set_title(cbar_title, fontsize = label_size, pad = 25) 
 		
-	I_low, I_up, E_low, E_up, energies_band_low 
-
 	a2.axvline(x=1, color='black', linestyle='--')
 	
 	a2.plot(I_low, E_low, color = "b", label = r"$W = 0$")
