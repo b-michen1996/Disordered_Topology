@@ -111,7 +111,7 @@ def Fig_1_V3(N, N_colorsteps, r, epsilon_1, epsilon_2, gamma, gamma_2, data_loca
 	cbar.ax.set_title(cbar_title, fontsize = label_size, pad = 25) 
 	
 	# plot clean and dirty sigma_xy
-	final_integral_lower, final_integral_upper, final_energies_lower, final_energies_upper, energies_band_low = Berry_codes.sigma_xy_analytically(N, epsilon_1, epsilon_2, gamma, gamma_2)
+	final_integral_lower, final_integral_upper, final_energies_lower, final_energies_upper, energies_band_low, energies_band_up = Berry_codes.sigma_xy_V3_analytically(N, r, epsilon_1, epsilon_2, gamma, gamma_2, gamma_3 = 0)
 	
 	plt.axvline(x=1, color='black', linestyle='--')
 	

@@ -20,7 +20,6 @@ sigma_y = np.array([[0, -1j],[1j, 0]])
 sigma_z = np.array([[1, 0],[0, -1]])
 
 
-
 def H_final_V3(kx, ky, r, epsilon_1, epsilon_2, gamma, gamma_2):
 	"""Bloch Hamiltonian that exhibits a dipole-like charge separation of topological charge"""
 	
@@ -241,8 +240,8 @@ def Omega_func_V3(kx, ky, r, epsilon_1, epsilon_2, gamma, gamma_2, band = -1, ga
 				
 	E = np.sqrt((gamma * s_x) ** 2 + (lambda_kx * s_y)**2 + (gamma_2 * (r - c_2x) - lambda_kx * c_y) ** 2)
 	
-	res = lambda_kx * (epsilon_2 * gamma * s_x ** 2 / 2 - 2 * gamma * gamma_2 * s_x * s_2x * c_y 
-					+ gamma * gamma_2 * (r - c_2x) * c_x * c_y - gamma * lambda_kx * c_x )
+	res = lambda_kx * (-epsilon_2 * gamma * s_x ** 2 / 2 + 2 * gamma * gamma_2 * s_x * s_2x * c_y 
+					- gamma * gamma_2 * (r - c_2x) * c_x * c_y + gamma * lambda_kx * c_x )
 	
 	res = - band * res / (2 * (E ** 3))
 	
@@ -317,8 +316,7 @@ def syst_final(Nx, Ny, epsilon_1, epsilon_2, gamma, gamma_2, PBC = 0., wrap_dir 
 		syst = kwant.wraparound.wraparound(syst, coordinate_names=('1', '2'))
 	else:
 		syst = kwant.wraparound.wraparound(syst, coordinate_names='1')
-	
-	
+		
 	return syst.finalized()
 
 
