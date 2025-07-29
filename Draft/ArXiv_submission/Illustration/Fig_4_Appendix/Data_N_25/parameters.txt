@@ -1,0 +1,15 @@
+kappa 0.4
+r 1.5
+epsilon_1 0.3
+epsilon_2 2
+gamma 2
+gamma_2 0.3
+W 0
+Nx 25
+Ny 25
+E_min -3
+E_max 3
+n_E 100
+n_pos 10
+run_nr 29
+sparse False

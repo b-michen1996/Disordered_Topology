@@ -1,0 +1,2 @@
+note however that the Bloch Hamiltonian in the current version of the manuscript contains a typo where the off-diagonal element is given as $h_{12}(\bm k) = \sqrt{2} e^{- i \pi /4} (e^{i k_x} + e^{i k_y} + i e^{i (k_x + k_y)} + 1)$ 
+We find this to lead to a distorted band structure, the correct Hamiltonian can be inferred from the provided KWANT codes.
