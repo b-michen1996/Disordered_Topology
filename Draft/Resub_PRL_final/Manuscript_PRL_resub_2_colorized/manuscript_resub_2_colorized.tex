@@ -56,7 +56,7 @@
 \date{\today}
 
 \begin{abstract}
-The quantum Hall effect was originally observed in a two-dimensional electron gas forming Landau levels when exposed to a strong perpendicular magnetic field, and has later been generalized to Chern insulators without net magnetization. Here, further extending the realm of the quantum Hall effect, we report on the robust occurrence of an integer quantized transverse conductance at the onset of disorder in a microscopic lattice model all bands of which are topologically trivial (zero Chern number). We attribute this remarkable phenomenon to the energetic separation of substantial but non-quantized Berry fluxes within the topologically trivial bands. Adding a random disorder potential then nudges the system into a stable quantum Hall phase from an extended critical regime of the clean system obtained by placing the Fermi energy within a broad window in either of the trivial bands. Our results are corroborated by extensive numerical transport simulations as well as the analysis of several complementary topological markers. 
+The quantum Hall effect was originally observed in a two-dimensional electron gas forming Landau levels when exposed to a strong perpendicular magnetic field, and has later been generalized to Chern insulators without net magnetization. Here, further extending the realm of the quantum Hall effect, we report on the robust occurrence of an integer quantized transverse conductance at the onset of disorder in a microscopic lattice model all bands of which are topologically trivial (zero Chern number). We attribute this remarkable phenomenon to the energetic separation of substantial but non-quantized Berry fluxes within the topologically trivial bands. Adding a random disorder potential then nudges the system into a stable quantum Hall phase from an extended critical regime of the clean system obtained by placing the Fermi energy within a broad window in either of the trivial bands. \BM{This may be seen as a natural integer-rounding mechanism manifesting as the mobility-gap-induced quantization of a non-universal clean Hall conductance.} Our results are corroborated by extensive numerical transport simulations as well as the analysis of several complementary topological markers.
 \end{abstract}
 
 \maketitle
@@ -176,7 +176,7 @@ Comparing the accumulated Berry flux with the lcoalizer gap (see Fig.~\ref{Fig:s
 \end{figure}
 
 {\it Concluding Discussion. ---} 
-We have demonstrated how a topologically stable quantum Hall effect may appear at the onset of disorder without any non-trivial Chern bands in the underlying band structure. From a practical computational perspective, we emphasize that the minimal disorder strength $W > 0$ required to observe this effect is constrained only by the numerically accessible system sizes that must exceed the localization length, which diverges for $W \rightarrow 0$. On a more physical note, the subtle interplay between increasing localization length necessitating larger system sizes and the asymptotically discontinuous integer rounding of $\sigma_{xy}$ within trivial bands represents an intriguing order-of-limits problem as a direction for future analytical study. To conclude, we would like to integrate our findings into a broader context by discussing their relation to previous work on non-standard (from a perspective of topological Bloch bands) topological phenomena.
+We have demonstrated how a topologically stable quantum Hall effect may appear at the onset of disorder without any non-trivial Chern bands in the underlying band structure. From a practical computational perspective, we emphasize that the minimal disorder strength $W > 0$ required to observe this effect is constrained only by the numerically accessible system sizes that must exceed the localization length, which diverges for $W \rightarrow 0$. On a more physical note, the subtle interplay between increasing localization length necessitating larger system sizes and the asymptotically discontinuous integer rounding of $\sigma_{xy}$ within trivial bands represents an intriguing order-of-limits problem as a direction for future analytical study. \BM{In this context, calculating a disorder-averaged real-space Green’s function \cite{RS_GF_1, RS_GF_2} and analyzing its topological properties \cite{GF_topology_2} may provide complementary insight.} To conclude, we would like to integrate our findings into a broader context by discussing their relation to previous work on non-standard (from a perspective of topological Bloch bands) topological phenomena.
 
 In periodically driven (Floquet) systems far from equilibrium, a counterpart of the \gls{iqh} effect relating to Floquet chiral edge states has been reported despite zero Chern number of all bulk bands \cite{Anomalous_Floquet_AI, Anomalous_BBC}. However, there the underlying band structure is still topological and the chiral edge states can only be removed by changing a bulk topological invariant unique to Floquet systems, which makes the role of zero Chern numbers very different from our present work.
 
@@ -190,7 +190,7 @@ Broadening the perspective, with the advent of Chern insulators generalizing fro
 
 
 {\it Acknowledgments. ---}
-We would like to thank Emil J. Bergholtz, Ion Cosma Fulga, and Bj\"orn Trauzettel for discussions. We acknowledge financial support from the German Research Foundation (DFG) through the Collaborative Research Centre SFB 1143  (Project-ID 247310070), the Cluster of Excellence ct.qmat (Project-ID 390858490). Our numerical calculations were performed on resources at the TU Dresden Center for Information Services and High Performance Computing (ZIH).
+We would like to thank Emil J. Bergholtz, Ion Cosma Fulga, Siddharth Parameswaran, and Bj\"orn Trauzettel for discussions. We acknowledge financial support from the German Research Foundation (DFG) through the Collaborative Research Centre SFB 1143  (Project-ID 247310070), the Cluster of Excellence ct.qmat (Project-ID 390858490). Our numerical calculations were performed on resources at the TU Dresden Center for Information Services and High Performance Computing (ZIH).
 
 \begin{thebibliography}{10}
 \bibitem{Klitzing}
@@ -378,6 +378,18 @@ A. Weisse, G. Wellein, A. Alvermann, H. Fehske, {\em The Kernel Polynomial Metho
 
 \bibitem{Symmetry_classes}
 A. Altland and M. R. Zirnbauer, {\em Nonstandard symmetry classes in mesoscopic normal-superconducting hybrid structures}, \href{https://journals.aps.org/prb/abstract/10.1103/PhysRevB.55.1142}{Phys. Rev. B {\bfseries 55}, 1142 (1997)}
+
+\BM{
+\bibitem{RS_GF_1}
+J. Fröhlich and T. Spencer, {\em A rigorous approach to Anderson localization}, \href{https://www.sciencedirect.com/science/article/pii/0370157384900619}{Physics Reports {\bfseries 103}, Issues 1-4 (1984)}.
+
+\bibitem{RS_GF_2}
+S. Onoda, N. Sugimoto, and N. Nagaosa, {\em Intrinsic Versus Extrinsic Anomalous Hall Effect in Ferromagnets}, \href{https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.97.126602}{Phys. Rev. Lett. {\bfseries 97}, 126602 (2006)}.
+
+\bibitem{GF_topology_2}
+Z. Wang and S.-C. Zhang, {\em Simplified Topological Invariants for Interacting Insulators}, \href{https://journals.aps.org/prx/abstract/10.1103/PhysRevX.2.031008}{Phys. Rev. X {\bfseries 2}, 031008 (2012)}
+
+}
 
 \bibitem{Haldane_1988}
 F. D. M. Haldane, {\em Model for a Quantum Hall Effect without Landau Levels: Condensed-Matter Realization of the "Parity Anomaly"}, \href{https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.61.2015}{Phys. Rev. Lett. {\bfseries 61}, 2015 (1988)}.

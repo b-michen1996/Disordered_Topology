@@ -1,9 +1,5 @@
-import csv
 import numpy as np
-import os
-
 from matplotlib import pyplot as plt
-import matplotlib.colors as colors
 
 
 # enable latex
@@ -26,10 +22,6 @@ def Fig_3(location_data_contour, location_data_inset):
     label_size = 25
     label_scale_inset = 0.72
     
-    n_levels = 1000
-    vmin = 0.
-    vmax = 2    
-       
     im_sigma_xy = a1.imshow(data,
                aspect='auto',
                origin='lower',
